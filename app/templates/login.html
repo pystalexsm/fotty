@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <div>
+            <h1 class="logo-name">Fotty</h1>
+        </div>
+        <h3>Welcome to Fotty</h3>
+        <form class="m-t" action="">
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Username" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" required="">
+            </div>
+            <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+            <br>
+            <a href="#"><small>Forgot password?</small></a>
+            <p class="text-muted text-center"><small>Do not have an account?</small></p>
+            <a class="btn btn-sm btn-white btn-block" href="{{ url_for('auth_.registration') }}">Create an account</a>
+        </form>
+        <p class="m-t"> <small>Мы отличная команда &copy; 2019</small> </p>
+    </div>
+</div>
+{% endblock %}
