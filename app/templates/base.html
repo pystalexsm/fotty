@@ -14,6 +14,14 @@
     </style>
 </head>
 <body>
+
+    {% for message in get_flashed_messages() %}
+    <div class="foxlabel-alert alert1 text-center" style="margin-top: 15px">
+        <a href="#" class="closed">×</a>
+        {{ message | safe }}
+    </div>
+    {% endfor %}
+
     {% block content %} {% endblock %}
 </body>
 </html>

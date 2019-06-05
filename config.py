@@ -8,10 +8,14 @@ class Config:
     """
     Основоной класс нвстроек
     """
-    SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
+    SECRET_KEY = os.urandom(24)
+
+    WTF_CSRF_ENABLED = False
+    WTF_CSRF_SECRET_KEY = os.urandom(24)
 
     SQLALCHEMY_COMMIT_ON_TEARDOWN = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = f'postgresql://{settings.DB_USER}:{settings.DB_PASS}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}'
 
     #  для email
     MAIL_SERVER = 'smtp.yandex.ru'
@@ -20,7 +24,7 @@ class Config:
     MAIL_USERNAME = settings.MAIL_USERNAME
     MAIL_PASSWORD = settings.MAIL_PASSWORD
 
-    MAIL_DEFAULT_SENDER = 'radio@adeptum.ru'
+    MAIL_DEFAULT_SENDER = settings.MAIL_USERNAME
     MAIL_CONFIRM_SALT = os.urandom(24)
 
     DEBUG = settings.DEBUG
