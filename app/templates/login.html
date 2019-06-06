@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% block menu %} {% endblock %}
 <!-- Content
 ============================================= -->
 <section id="content">
@@ -27,12 +29,12 @@
 
                                     <div class="col_full">
                                         <label for="login-form-email">Email:</label>
-                                        <input value="starovoitov85@gmaiol.com" type="text" id="login-form-email" name="email" class="form-control" />
+                                        <input type="text" id="login-form-email" name="email" class="form-control" />
                                     </div>
 
                                     <div class="col_full">
                                         <label for="login-form-password">Password:</label>
-                                        <input value="MgJQ8kpd119X" type="password" id="login-form-password" name="password" class="form-control" />
+                                        <input type="password" id="login-form-password" name="password" class="form-control" />
                                     </div>
 
                                     <div class="col_full nobottommargin">
@@ -96,3 +98,5 @@
 
 </section><!-- #content end -->
 {% endblock %}
+
+{% block footer %} {% endblock %}

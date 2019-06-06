@@ -270,7 +270,8 @@ small { font-family: 'Lato', sans-serif; }
 }
 
 #wrapper {
-	position: relative;
+    position: relative;
+    min-height: 100%;
 	float: none;
 	width: 1220px;
 	margin: 0 auto;

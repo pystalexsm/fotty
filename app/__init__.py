@@ -54,7 +54,6 @@ def create_app():
 
     @login.user_loader
     def load_user(user_id):
-        print(user_id)
         """
         проверка авторизации
         :param user_id: идентификатор пользователя
