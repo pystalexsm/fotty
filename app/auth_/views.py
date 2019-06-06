@@ -3,7 +3,7 @@ import string
 from datetime import datetime
 
 from flask import current_app, flash, redirect, render_template, request, url_for
-from flask_login import current_user, login_user
+from flask_login import login_user
 from itsdangerous import BadSignature, BadTimeSignature, URLSafeTimedSerializer
 from sqlalchemy import exc
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -57,16 +57,19 @@ def login():
                 elif check_password_hash(user_.password, password):
                     login_user(user=user_, remember=True)
 
-                    redirect(url_for('profile.index'))
+                    return redirect(url_for('profile.index'))
                 else:
                     flash('Не верный пароль!!!')
             else:
                 flash('Пользователь не существует!!!')
+        else:
+            for error in form_.errors:
+                flash(f'{error}: {form_.errors[error]}')
 
-    return render_template('login.html')
+    return render_template('login.html', title='Fotty - Login/Registration')
 
 
-@auth_.route('/registration', methods=('GET', 'POST'))
+@auth_.route('/registration', methods=('POST',))
 def registration():
 
     form_ = RegisterForm(request.form)
@@ -76,23 +79,24 @@ def registration():
             user_name = request.form.get('name')
             email = request.form.get('email')
             password = request.form.get('password')
-            policy = request.form.get('policy')
+            phone = request.form.get('phone')
 
-            if policy.__eq__('on'):
-                policy = True
-            else:
-                policy = False
+            # обработка телефона
+            phone = phone.replace('(', '')
+            phone = phone.replace(')', '')
+            phone = phone.replace('+', '')
+            phone = phone.replace('-', '')
+            phone = phone.replace(' ', '')
 
             user = User()
             user.name = user_name.strip().lower()
             user.email = email.lower()
             user.password = generate_password_hash(password)
-            user.policy = policy
 
             user.created_at = datetime.now()
             user.updated_at = datetime.now()
 
-            user.phone = ''
+            user.phone = phone
             user.confirmed = False
 
             db.session.add(user)
@@ -118,8 +122,6 @@ def registration():
 
             except Exception:
                 flash('При отправки письма произошла ошибка!!!')
-
-    return render_template('register.html', form=form_)
 
 
 @auth_.route('/forgot', methods=('GET', 'POST'))
@@ -159,7 +161,8 @@ def forgot_password():
         else:
             flash('Неккоректный email!!!')
 
-    return render_template('forgot-password.html')
+    return render_template('forgot-password.html', title='Fotty - forgot')
+
 
 @auth_.route('/confirm/email/<token>')
 def confirm_email(token):

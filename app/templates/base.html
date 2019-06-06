@@ -1,27 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html dir="ltr" lang="en-US">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
-    <title>{{ title }}</title>
-    <!-- Css Files -->
-    <link href="{{ url_for('static', filename='css/root.css') }}" rel="stylesheet">
-    <style type="text/css">
-        body {
-            background: #F5F5F5;
-        }
-    </style>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="author" content="SemiColonWeb" />
+
+	<!-- Stylesheets
+	============================================= -->
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/dark.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/font-icons.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}" type="text/css" />
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}" type="text/css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<!-- Document Title
+	============================================= -->
+	<title>{{ title }}</title>
+
 </head>
-<body>
+
+<body class="stretched">
+
+	<!-- Document Wrapper
+	============================================= -->
+	<div id="wrapper" class="clearfix">
 
     {% for message in get_flashed_messages() %}
-    <div class="foxlabel-alert alert1 text-center" style="margin-top: 15px">
-        <a href="#" class="closed">×</a>
+    <div class="alert alert-info text-center" style="margin-top: 15px;">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <i class="icon-hand-up"></i>
         {{ message | safe }}
     </div>
     {% endfor %}
 
     {% block content %} {% endblock %}
+
+	</div><!-- #wrapper end -->
+
+	<!-- Go To Top
+	============================================= -->
+	<div id="gotoTop" class="icon-angle-up"></div>
+
+	<!-- External JavaScripts
+	============================================= -->
+	<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
+
+	<!-- Footer Scripts
+	============================================= -->
+	<script src="{{ url_for('static', filename='js/functions.js') }}"></script>
+
 </body>
 </html>
+
