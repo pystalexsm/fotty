@@ -18,7 +18,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Имя</th>
+                                    <th>Название</th>
                                     <th>Дата события</th>
                                     <th>Место события</th>
                                     <th>Статус</th>
@@ -27,19 +27,25 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for event in events %}
+
                                 <tr>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>61</td>
-                                    <td>2011/04/25</td>
-                                    <td>$320,800</td>
+                                    <td>{{ event.id }}</td>
+                                    <td>{{ event.title }}</td>
+                                    <td>{{ event.date_at.strftime('%d.%m.%Y') }}</td>
+                                    <td>{{ event.place }}</td>
+                                    <td>{{ event.status }}</td>
+                                    <td>{{ event.created_at.strftime('%d.%m.%Y') }}</td>
                                     <td class="text-center">
-                                        <a href=""><i style="font-size: 35px" class="icon-edit-sign"></i></a>
+                                        <a href="{{ url_for('events.edit', id=event.id) }}"><i style="font-size: 35px" class="icon-edit-sign"></i></a>
                                         &nbsp;
-                                        <a href=""><i style="font-size: 35px;" class="icon-remove-sign"></i></a>
+                                        <a href="{{ url_for('events.delete', id=event.id) }}"><i style="font-size: 35px;" class="icon-remove-sign"></i></a>
                                     </td>
                                 </tr>
+
+                                {% else %}
+
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -73,7 +79,7 @@
 <script src="{{ url_for('static', filename='js/components/bs-datatable.js') }}"></script>
 
 <script>
-    $(document).ready( function(){
+    $(document).ready(function () {
         $(document).ready(function () {
             $('#events').dataTable();
         });

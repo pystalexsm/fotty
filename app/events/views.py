@@ -1,18 +1,22 @@
 from datetime import datetime
 
-from flask import flash, redirect, render_template, request, url_for
+from flask import Markup, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
+from sqlalchemy import and_
 
+from app.database import db
 from app.events.models import Event
 
 from . import events
-from app.database import db
 
 
 @events.route('/')
 @login_required
 def index():
-    return render_template('events.html', user=current_user)
+
+    events_ = Event.query.filter_by(status=Event.STATUS_ACTIVATE).all()
+
+    return render_template('events.html', user=current_user, events=events_)
 
 
 @events.route('/create', methods=('GET', 'POST'))
@@ -34,26 +38,58 @@ def create():
         if place is not None and len(place) > 0:
             place = place.strip()
 
-        print(date_at)
-        print(title)
-        print(place)
-
         if title and date_at and place:
-            event_ = Event()
 
-            event_.name = title
-            event_.date_at = date_at
-            event_.place = place
-            event_.status = 1
-            event_.created_at = datetime.now()
-            event_.updated_at = datetime.now()
-            event_.user_id = current_user.get_id()
+            event_ = Event(
+                title=title,
+                date_at=date_at,
+                place=place,
+                status=1,
+                created_at=datetime.now(),
+                updated_at=datetime.now(),
+                user_id=current_user.get_id()
+            )
 
             db.session.add(event_)
-            db.sesion.commit()
+            db.session.commit()
 
-            return redirect(url_for('.events'))
+            return redirect(url_for('.index'))
         else:
             flash('Данные не прошли проверку!!!')
 
     return render_template('event-create-edit.html')
+
+
+@events.route('/edit/<int:id>', methods=('GET', 'PUT'))
+@login_required
+def edit(id):
+    return Markup(f"Скоро редактирование <a href='{url_for('events.index')}'>Вернись назад</a>")
+
+
+@events.route('/delete/<int:id>')
+@login_required
+def delete(id):
+    if id:
+        try:
+
+            id = int(id)
+            user_id = current_user.get_id()
+
+            event_ = Event.query.filter(and_(Event.id.__eq__(id), Event.user_id.__eq__(user_id))).first()
+            if event_ is not None:
+                event_.status = Event.STATUS_DELETE
+                event_.updated_at = datetime.now()
+
+                db.session.add(event_)
+                db.session.commit()
+
+                flash(f'Успешное удаление события № {id}')
+
+                return redirect(url_for('events.index'))
+
+        except (TypeError, ValueError):
+            flash('При удалении произошла ошибка!!!')
+            return redirect(url_for('events.index'))
+
+    flash('При удалении произошла ошибка!!!')
+    return redirect(url_for('events.index'))

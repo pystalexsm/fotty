@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section id="content">
+<section id="content" style="margin-top: 2%">
 
     <div class="content-wrap">
 
@@ -16,7 +16,7 @@
                         <div class="form-process"></div>
                         <div class="col-12 form-group">
                             <label>Название:</label>
-                            <input type="text" name="name" id="event-create-name"
+                            <input type="text" name="title" id="event-create-name"
                                 class="form-control required" value="" placeholder="Введите название">
                         </div>
 
@@ -51,10 +51,19 @@
 
 {% block custom_scripts %}
 
+<script src="{{ url_for('static', filename='js/components/moment.js') }}"></script>
 <script src="{{ url_for('static', filename='js/components/datepicker.js') }}"></script>
+<script src="{{ url_for('static', filename='js/components/timepicker.js') }}"></script>
 
 <script>
 $(document).ready( function(){
+    // $('#event-create-date').datepicker({
+    //     // autoclose: true,
+    //     startDate: "today",
+    //     todayHighlight: true,
+    //     format: 'dd-mm-yyyy'
+    // });
+
     $('#event-create-date').datepicker({
         autoclose: true,
         startDate: "today",
