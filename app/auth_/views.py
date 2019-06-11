@@ -66,10 +66,10 @@ def login():
             for error in form_.errors:
                 flash(f'{error}: {form_.errors[error]}')
 
-    return render_template('login.html', title='Fotty - Login/Registration')
+    return render_template('login.html', title='Fotty - Login')
 
 
-@auth_.route('/registration', methods=('POST',))
+@auth_.route('/registration', methods=('POST', 'GET'))
 def registration():
 
     form_ = RegisterForm(request.form)
@@ -122,6 +122,11 @@ def registration():
 
             except Exception:
                 flash('При отправки письма произошла ошибка!!!')
+        else:
+            for error in form_.errors:
+                flash(f'{error}: {form_.errors[error]}')
+
+    return render_template('registration.html', title='Fotty - Registration')
 
 
 @auth_.route('/forgot', methods=('GET', 'POST'))
