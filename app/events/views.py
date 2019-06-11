@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Markup, flash, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import and_
 
@@ -57,13 +57,19 @@ def create():
         else:
             flash('Данные не прошли проверку!!!')
 
-    return render_template('event-create-edit.html')
+    return render_template('event-create.html')
 
 
-@events.route('/edit/<int:id>', methods=('GET', 'PUT'))
+@events.route('/edit/<int:id>', methods=('GET', 'POST'))
 @login_required
 def edit(id):
-    return Markup(f"Скоро редактирование <a href='{url_for('events.index')}'>Вернись назад</a>")
+    user_id = current_user.get_id()
+    event_ = Event.query.filter(and_(Event.id.__eq__(id), Event.user_id.__eq__(user_id))).first()
+
+    if request.method.__eq__('POST'):
+        print('-> POST')
+
+    return render_template('event-edit.html', event=event_)
 
 
 @events.route('/delete/<int:id>')

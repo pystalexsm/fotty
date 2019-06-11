@@ -7,34 +7,34 @@
 
         <div class="container clearfix">
 
-            <h3>Редактирование профиля</h3>
+            <h3>Редактирование события</h3>
 
             <div class="row">
                 <div class="col-lg-8">
-                    <form class="row" id="event-create" action="{{ url_for('events.create') }}" method="post">
+                    <form class="row" id="event-edit" action="{{ url_for('events.edit', id=event.id) }}" method="post">
 
                         <div class="form-process"></div>
                         <div class="col-12 form-group">
                             <label>Название:</label>
-                            <input type="text" name="title" id="event-create-name"
-                                class="form-control required" value="" placeholder="Введите название">
+                            <input type="text" name="title" id="event-edit-name"
+                                class="form-control required" value="{{ event.title }}" placeholder="Введите название">
                         </div>
 
                         <div class="col-12 form-group">
                             <label>Дата мероприятия:</label>
-                            <input type="date" name="date_at" id="event-create-date"
-                                class="form-control tleft past-enabled required" value="" placeholder="Введите дату ">
+                            <input type="date" name="date_at" id="event-edit-date"
+                                class="form-control tleft past-enabled required" value="{{ event.date_at.strftime('%d-%m-%Y') }}" placeholder="Введите дату ">
                         </div>
 
                         <div class="col-12 form-group">
                             <label>Место проведения:</label>
-                            <input type="text" name="place" id="event-create-place"
-                                class="form-control required" value=""
+                            <input type="text" name="place" id="event-edit-place"
+                                class="form-control required" value="{{ event.place }}"
                                 placeholder="Введите место проведения">
                         </div>
 
                         <div class="col-12">
-                            <button type="submit" name="event-create-submit"
+                            <button type="submit" name="event-edit-submit"
                                 class="btn btn-success">Сохранить</button>
                             <a href="{{ url_for('events.index') }}" class="btn btn-secondary">Назад</a>
                         </div>

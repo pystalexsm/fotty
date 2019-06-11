@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="content" style="margin-top: 2%">
+
+    <div class="content-wrap">
+
+        <div class="container clearfix">
+
+            <h3>Создание события</h3>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <form class="row" id="event-create" action="{{ url_for('events.create') }}" method="post">
+
+                        <div class="form-process"></div>
+                        <div class="col-12 form-group">
+                            <label>Название:</label>
+                            <input type="text" name="title" id="event-create-name"
+                                class="form-control required" value="" placeholder="Введите название">
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <label>Дата мероприятия:</label>
+                            <input type="date" name="date_at" id="event-create-date"
+                                class="form-control tleft past-enabled required" value="" placeholder="Введите дату ">
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <label>Место проведения:</label>
+                            <input type="text" name="place" id="event-create-place"
+                                class="form-control required" value=""
+                                placeholder="Введите место проведения">
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" name="event-create-submit"
+                                class="btn btn-success">Сохранить</button>
+                            <a href="{{ url_for('events.index') }}" class="btn btn-secondary">Назад</a>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+</section><!-- #content end -->
+{% endblock %}
+
+{% block custom_scripts %}
+
+<script src="{{ url_for('static', filename='js/components/moment.js') }}"></script>
+<script src="{{ url_for('static', filename='js/components/datepicker.js') }}"></script>
+<script src="{{ url_for('static', filename='js/components/timepicker.js') }}"></script>
+
+<script>
+$(document).ready( function(){
+    // $('#event-create-date').datepicker({
+    //     // autoclose: true,
+    //     startDate: "today",
+    //     todayHighlight: true,
+    //     format: 'dd-mm-yyyy'
+    // });
+
+    $('#event-create-date').datepicker({
+        autoclose: true,
+        startDate: "today",
+        todayHighlight: true,
+        format: 'dd-mm-yyyy'
+    });
+});
+</script>
+{% endblock %}

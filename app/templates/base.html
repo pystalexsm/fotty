@@ -56,10 +56,11 @@
                                 <li {% if profile %} class='current' {% endif %}><a href="{{ url_for('profile.index') }}"><div>Профиль</div></a></li>
                                 <li {% if enents %} class='current' {% endif %}><a href="{{ url_for('events.index') }}"><div>События</div></a></li>
                             </ul>
-
+                            {% if current_user %}
                             <ul class="right">
                                 <li><a href="{{ url_for('auth_.logout') }}">Выход</a></li>
                             </ul>
+                            {% endif %}
                         </nav><!-- #primary-menu end -->
 
                     </div>
