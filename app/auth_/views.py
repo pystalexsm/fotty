@@ -2,7 +2,7 @@ import random
 import string
 from datetime import datetime
 
-from flask import current_app, flash, redirect, render_template, request, url_for
+from flask import current_app, flash, redirect, render_template, request, url_for, Markup
 from flask_login import login_user, logout_user
 from itsdangerous import BadSignature, BadTimeSignature, URLSafeTimedSerializer
 from sqlalchemy import exc

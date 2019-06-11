@@ -11,14 +11,14 @@ class User(db.Model):
 
     __tablename__ = 'users'
 
-    id = db.Column(db.BigInteger, primary_key=True, nullable=False, autoincrement=True)
-    name = db.Column(db.String(255), nullable=False)
-    phone = db.Column(db.String(255), nullable=False, unique=True)
-    email = db.Column(db.String(255), nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime(), nullable=False, default=datetime.now())
-    updated_at = db.Column(db.DateTime(), nullable=False, default=datetime.now())
-    confirmed = db.Column(db.Boolean(), default=False)
+    id = db.Column(db.BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='ID пользователя')
+    name = db.Column(db.String(255), nullable=False, comment='Имя пользователя')
+    phone = db.Column(db.String(255), nullable=False, comment='Телефон пользователя')
+    email = db.Column(db.String(255), nullable=False, unique=True, comment='Email пользователя')
+    password = db.Column(db.String(255), nullable=False, comment='Пароль пользователя')
+    created_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата создания')
+    updated_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата обновления')
+    confirmed = db.Column(db.Boolean(), default=False, comment='Подтвержден?')
 
     def is_active(self):
         """True, as all users are active."""
@@ -37,4 +37,4 @@ class User(db.Model):
         return False
 
     def __repr__(self):
-        return '<Users %r>' % self.name
+        return '<User %r>' % self.name

@@ -54,7 +54,7 @@
 
                             <ul>
                                 <li {% if profile %} class='current' {% endif %}><a href="{{ url_for('profile.index') }}"><div>Профиль</div></a></li>
-                                <li {% if enents %} class='current' {% endif %}><a href="#"><div>События</div></a></li>
+                                <li {% if enents %} class='current' {% endif %}><a href="{{ url_for('events.index') }}"><div>События</div></a></li>
                             </ul>
 
                             <ul class="right">
@@ -66,7 +66,7 @@
 
                 </div>
 
-            </header><!-- #header end -->
+            </header>
         {% endblock %}
 
         {% for message in get_flashed_messages() %}
@@ -89,8 +89,8 @@
                 <div class="container clearfix">
 
                     <div class="col_half">
-                        Copyrights &copy; {{ now.year }} All Rights Reserved by Fotty Inc.<br>
-                        <div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div>
+                        Copyrights &copy; {{ now.year }} Сделано на обучении в Learn Python.<br>
+                        <div class="copyright-links"><a href="https://learn.python.ru">Learn Python</a> / <a href="#">Privacy Policy</a></div>
                     </div>
 
                     <div class="col_half col_last tright">
@@ -109,8 +109,8 @@
 
                         <div class="clear"></div>
 
-                        <i class="icon-envelope2"></i> info@fotty.ru <span class="middot">&middot;</span> <i
-                            class="icon-headphones"></i> +91-11-6541-6369 <span class="middot">&middot;</span>
+                        <i class="icon-envelope2"></i> stalex.info@yandex.ru <span class="middot">&middot;</span> <i
+                            class="icon-headphones"></i> +79992248585 <span class="middot">&middot;</span>
                     </div>
 
                 </div>
@@ -134,6 +134,8 @@
     <!-- Footer Scripts
 	============================================= -->
     <script src="{{ url_for('static', filename='js/functions.js') }}"></script>
+
+    {% block custom_scripts %} {% endblock %}
 
 </body>
 

@@ -7,6 +7,7 @@ from flask_migrate import Migrate
 from sqlalchemy import exc
 
 from app.auth_.models import User
+from app.events.models import Event
 from app.database import db
 from app.email import mail
 from config import Config
@@ -33,7 +34,7 @@ def create_app():
 
     @app.shell_context_processor
     def make_shell_context():
-        return dict(db=db, User=User)
+        return dict(db=db, User=User, Event=Event)
 
     @app.context_processor
     def init():
@@ -80,5 +81,8 @@ def create_app():
 
     from app.profile import profile as profile_blueprint
     app.register_blueprint(profile_blueprint, url_prefix='/')
+
+    from app.events import events as events_blueprint
+    app.register_blueprint(events_blueprint, url_prefix='/events')
 
     return app
