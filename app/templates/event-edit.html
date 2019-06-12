@@ -11,22 +11,25 @@
 
                 <div class="col-12 form-group">
                     <label>Название:</label>
-                    <input required type="text" name="title" class="form-control custom-input-form" value="{{ event.title }}" placeholder="Название">
+                    <input required type="text" name="title" class="form-control custom-input-form"
+                        value="{{ event.title }}" placeholder="Название">
                 </div>
 
                 <div class="col-12 form-group">
                     <label>Дата мероприятия:</label>
-                    <input required type="date" name="date_at" class="form-control custom-input-form" value="{{ event.date_at }}" placeholder="Дата события">
+                    <input required type="date" id="date_at" name="date_at" class="form-control custom-input-form"
+                        value="{{ event.date_at.strftime('%d.%m.%Y') }}" placeholder="Дата события">
                 </div>
 
                 <div class="col-12 form-group">
                     <label>Место проведения:</label>
-                    <input required type="text" name="place" class="form-control custom-input-form" value="{{ event.place }}"
-                        placeholder="Место проведения">
+                    <input required type="text" name="place" class="form-control custom-input-form"
+                        value="{{ event.place }}" placeholder="Место проведения">
                 </div>
 
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary btn-color-fotty btn-radius-fotty col-6">Сохранить</button>
+                    <button type="submit"
+                        class="btn btn-primary btn-color-fotty btn-radius-fotty col-6">Сохранить</button>
                     <a href="{{ url_for('events.index') }}" class="btn btn-secondary btn-radius-fotty-a col-2">Назад</a>
                 </div>
 
@@ -36,4 +39,17 @@
     </div>
 
 </div>
+{% endblock %}
+
+{% block custom_scripts %}
+
+<script>
+    $(function () {
+        new Datepicker('#date_at', {
+            weekStart: 1,
+            openOn: 'today',
+        });
+    });
+</script>
+
 {% endblock %}

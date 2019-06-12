@@ -33,7 +33,7 @@ def create():
             title = title.strip()
 
         if date_at is not None and len(date_at) > 0:
-            date_at = datetime.strptime(date_at, '%d-%m-%Y')
+            date_at = datetime.strptime(date_at, '%d.%m.%Y')
 
         if place is not None and len(place) > 0:
             place = place.strip()
@@ -67,7 +67,34 @@ def edit(id):
     event_ = Event.query.filter(and_(Event.id.__eq__(id), Event.user_id.__eq__(user_id))).first()
 
     if request.method.__eq__('POST'):
-        print('-> POST')
+
+        title = request.form.get('title')
+        date_at = request.form.get('date_at')
+        place = request.form.get('place')
+
+        if title is not None and len(title) > 0:
+            title = title.strip()
+
+        if date_at is not None and len(date_at) > 0:
+            date_at = datetime.strptime(date_at, '%d.%m.%Y')
+
+        if place is not None and len(place) > 0:
+            place = place.strip()
+
+        if title and date_at and place:
+
+            event_.title = title
+            event_.date_at = date_at
+            event_.place = place
+            event_.updated_at = datetime.now()
+
+            db.session.add(event_)
+            db.session.commit()
+
+            return redirect(url_for('.index'))
+
+        else:
+            flash('Данные не прошли проверку!!!')
 
     return render_template('event-edit.html', event=event_, title=f'Редауьтрование события № {id}')
 
