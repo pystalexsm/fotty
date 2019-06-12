@@ -14,7 +14,7 @@ from . import events
 @login_required
 def index():
 
-    events_ = Event.query.filter_by(status=Event.STATUS_ACTIVATE).all()
+    events_ = Event.query.filter_by(status=Event.STATUS_ACTIVATE).order_by(Event.date_at.asc()).all()
 
     return render_template('events.html', user=current_user, events=events_, title='Список событий')
 
