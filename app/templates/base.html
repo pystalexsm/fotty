@@ -1,143 +1,65 @@
-<!DOCTYPE html>
-<html dir="ltr" lang="en-US">
+<!doctype html>
+<html lang="ru">
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="author" content="SemiColonWeb" />
-
-    <!-- Stylesheets
-	============================================= -->
-    <link
-        href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i"
-        rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dark.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-icons.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}" type="text/css" />
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}" type="text/css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Document Title
-	============================================= -->
     <title>{{ title }}</title>
-
 </head>
 
-<body class="stretched">
+<body>
 
-    <!-- Document Wrapper
-	============================================= -->
-    <div id="wrapper" class="clearfix">
+    {% block navbar %}
+    <nav class="navbar navbar-expand-md navbar-dark" style="background: #301C99">
+        <div class="col-2 offset-1">
+            <a class="navbar-brand custom-brand-logo" href="/">Fotty</a>
+        </div>
 
-        {% block menu %}
-        <header id="header" class="full-header">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {% if profile %} active {% endif %}">
+                    <a class="nav-link custom-font" href="{{ url_for('profile.index') }}">Профиль<span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item {% if events %} active {% endif %}">
+                    <a class="nav-link custom-font" href="{{ url_for('events.index') }}">События</a>
+                </li>
+            </ul>
+            <div class="navbar">
+                <a class="link-exit custom-font fright" href="{{ url_for('auth_.logout') }}">Выход</a>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
 
-                <div id="header-wrap">
-
-                    <div class="container clearfix">
-
-                        <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
-
-                        <!-- Logo
-                        ============================================= -->
-                        <div id="logo">
-                            <a href="{{ url_for('profile.index') }}" class="standard-logo">Fotty</a>
-                        </div><!-- #logo end -->
-
-                        <!-- Primary Navigation
-                        ============================================= -->
-                        <nav id="primary-menu" class="style-4">
-
-                            <ul>
-                                <li {% if profile %} class='current' {% endif %}><a href="{{ url_for('profile.index') }}"><div>Профиль</div></a></li>
-                                <li {% if enents %} class='current' {% endif %}><a href="{{ url_for('events.index') }}"><div>События</div></a></li>
-                            </ul>
-                            {% if current_user %}
-                            <ul class="right">
-                                <li><a href="{{ url_for('auth_.logout') }}">Выход</a></li>
-                            </ul>
-                            {% endif %}
-                        </nav><!-- #primary-menu end -->
-
-                    </div>
-
-                </div>
-
-            </header>
-        {% endblock %}
+    <main role="main" class="container-fluid py-3">
 
         {% for message in get_flashed_messages() %}
-        <div class="alert alert-info text-center" style="margin-top: 15px">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <i class="icon-hand-up"></i>
+        <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
             {{ message | safe }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         {% endfor %}
 
         {% block content %} {% endblock %}
+    </main><!-- /.container -->
 
-        {% block footer %}
-        <footer id="footer" class="dark">
-
-            <!-- Copyrights
-            ============================================= -->
-            <div id="copyrights">
-
-                <div class="container clearfix">
-
-                    <div class="col_half">
-                        Copyrights &copy; {{ now.year }} Сделано на обучении в Learn Python.<br>
-                        <div class="copyright-links"><a href="https://learn.python.ru">Learn Python</a> / <a href="#">Privacy Policy</a></div>
-                    </div>
-
-                    <div class="col_half col_last tright">
-                        <div class="fright clearfix">
-                            <a href="#" class="social-icon si-small si-borderless si-facebook">
-                                <i class="icon-facebook"></i>
-                                <i class="icon-facebook"></i>
-                            </a>
-
-                            <a href="#" class="social-icon si-small si-borderless si-vk">
-                                <i class="icon-vk"></i>
-                                <i class="icon-vk"></i>
-                            </a>
-
-                        </div>
-
-                        <div class="clear"></div>
-
-                        <i class="icon-envelope2"></i> stalex.info@yandex.ru <span class="middot">&middot;</span> <i
-                            class="icon-headphones"></i> +79992248585 <span class="middot">&middot;</span>
-                    </div>
-
-                </div>
-
-            </div><!-- #copyrights end -->
-
-        </footer><!-- #footer end -->
-        {% endblock %}
-
-    </div><!-- #wrapper end -->
-
-    <!-- Go To Top
-	============================================= -->
-    <div id="gotoTop" class="icon-angle-up"></div>
-
-    <!-- External JavaScripts
-	============================================= -->
-    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
-
-    <!-- Footer Scripts
-	============================================= -->
-    <script src="{{ url_for('static', filename='js/functions.js') }}"></script>
-
-    {% block custom_scripts %} {% endblock %}
-
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/7832a9139c.js"></script>
 </body>
 
 </html>

@@ -1,61 +1,42 @@
 {% extends 'base.html' %}
 
+{% block navbar %} {% endblock %}
+
 {% block content %}
 
-{% block menu %} {% endblock %}
-<!-- Content
-============================================= -->
-<section id="content">
-
-    <div class="content-wrap">
-
-        <div class="container clearfix">
-
-            <div class="tabs divcenter nobottommargin clearfix" id="tab-login-register" style="max-width: 500px;">
-
-                <div class="tab-container">
-
-                    <div class="card nobottommargin">
-                        <div class="card-body" style="padding: 40px;">
-                            <form id="login-form" name="login-form" class="nobottommargin"
-                                action="{{ url_for('auth_.login') }}" method="post">
-
-                                <h3>Login to your Account</h3>
-
-                                <div class="col_full">
-                                    <label for="login-form-email">Email:</label>
-                                    <input type="text" id="login-form-email" name="email" class="form-control" />
-                                </div>
-
-                                <div class="col_full">
-                                    <label for="login-form-password">Password:</label>
-                                    <input type="password" id="login-form-password" name="password"
-                                        class="form-control" />
-                                </div>
-
-                                <div class="col_full nobottommargin">
-                                    <button type="submit" class="button button-3d button-black nomargin"
-                                        value="login">Login</button>
-                                    <span class="frigth" style="margin-left: 20%">
-                                        <a href="{{ url_for('auth_.registration') }}">Create Account?</a>
-                                        &nbsp;
-                                        &nbsp;
-                                        <a href="{{ url_for('auth_.forgot_password') }}">Forgot Password?</a>
-                                    </span>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
+<div class="container-fluid ">
+    <div class="row ">
+        <div class="col-2 custom-brand-logo-login">
+            Fotty
         </div>
-
+        <div class="col-2 offset-8">
+            <a class="custom-font custom-link-reg" href="{{ url_for('auth_.registration') }}">Зарегистрироваться</a>
+        </div>
     </div>
+    <div class="row py-5 justify-content-center">
+        <div class="col-4">
+            <div class="custom-title">
+                Вход
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <form action="{{ url_for('auth_.login') }}" method="post">
+                <div class="form-group">
+                    <input type="email" name="email" class="form-control custom-input-form" aria-describedby="emailHelp" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control custom-input-form" placeholder="Пароль">
+                </div>
+                <button type="submit" class="btn btn-primary btn-color-fotty btn-radius-fotty col-8">Войти</button>
+                &nbsp;&nbsp;
+                <a class="link-login-fotty-forgot" href="{{ url_for('auth_.forgot_password') }}">Забыли пароль?</a>
+            </form>
+        </div>
+    </div>
+</div>
 
-</section><!-- #content end -->
 {% endblock %}
 
 {% block footer %} {% endblock %}

@@ -1,75 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section id="content" style="margin-top: 2%">
+<div class="container py-3">
 
-    <div class="content-wrap">
+    <h3>{{ title }}</h3>
 
-        <div class="container clearfix">
+    <div class="row py-5">
+        <div class="col-8">
+            <form class="row" action="{{ url_for('events.edit', id=event.id) }}" method="post">
 
-            <h3>Редактирование события</h3>
-
-            <div class="row">
-                <div class="col-lg-8">
-                    <form class="row" id="event-edit" action="{{ url_for('events.edit', id=event.id) }}" method="post">
-
-                        <div class="form-process"></div>
-                        <div class="col-12 form-group">
-                            <label>Название:</label>
-                            <input type="text" name="title" id="event-edit-name"
-                                class="form-control required" value="{{ event.title }}" placeholder="Введите название">
-                        </div>
-
-                        <div class="col-12 form-group">
-                            <label>Дата мероприятия:</label>
-                            <input type="date" name="date_at" id="event-edit-date"
-                                class="form-control tleft past-enabled required" value="{{ event.date_at.strftime('%d-%m-%Y') }}" placeholder="Введите дату ">
-                        </div>
-
-                        <div class="col-12 form-group">
-                            <label>Место проведения:</label>
-                            <input type="text" name="place" id="event-edit-place"
-                                class="form-control required" value="{{ event.place }}"
-                                placeholder="Введите место проведения">
-                        </div>
-
-                        <div class="col-12">
-                            <button type="submit" name="event-edit-submit"
-                                class="btn btn-success">Сохранить</button>
-                            <a href="{{ url_for('events.index') }}" class="btn btn-secondary">Назад</a>
-                        </div>
-
-                    </form>
+                <div class="col-12 form-group">
+                    <label>Название:</label>
+                    <input required type="text" name="title" class="form-control custom-input-form" value="{{ event.title }}" placeholder="Название">
                 </div>
 
-            </div>
+                <div class="col-12 form-group">
+                    <label>Дата мероприятия:</label>
+                    <input required type="date" name="date_at" class="form-control custom-input-form" value="{{ event.date_at }}" placeholder="Дата события">
+                </div>
 
+                <div class="col-12 form-group">
+                    <label>Место проведения:</label>
+                    <input required type="text" name="place" class="form-control custom-input-form" value="{{ event.place }}"
+                        placeholder="Место проведения">
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-color-fotty btn-radius-fotty col-6">Сохранить</button>
+                    <a href="{{ url_for('events.index') }}" class="btn btn-secondary btn-radius-fotty-a col-2">Назад</a>
+                </div>
+
+            </form>
         </div>
 
-</section><!-- #content end -->
-{% endblock %}
+    </div>
 
-{% block custom_scripts %}
-
-<script src="{{ url_for('static', filename='js/components/moment.js') }}"></script>
-<script src="{{ url_for('static', filename='js/components/datepicker.js') }}"></script>
-<script src="{{ url_for('static', filename='js/components/timepicker.js') }}"></script>
-
-<script>
-$(document).ready( function(){
-    // $('#event-create-date').datepicker({
-    //     // autoclose: true,
-    //     startDate: "today",
-    //     todayHighlight: true,
-    //     format: 'dd-mm-yyyy'
-    // });
-
-    $('#event-create-date').datepicker({
-        autoclose: true,
-        startDate: "today",
-        todayHighlight: true,
-        format: 'dd-mm-yyyy'
-    });
-});
-</script>
+</div>
 {% endblock %}

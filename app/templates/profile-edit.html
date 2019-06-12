@@ -1,61 +1,54 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section id="content">
 
-    <div class="content-wrap">
+<div class="container py-5">
 
-        <div class="container clearfix">
+    <h3>Редактирование профиля</h3>
 
-            <h3>Редактирование профиля</h3>
+    <div class="row py-3">
+        <div class="col-8">
+            <form class="row" action="{{ url_for('profile.edit', id=user.id) }}" method="post">
 
-            <div class="row">
-                <div class="col-lg-8">
-                    <form class="row" id="event-registration" action="{{ url_for('profile.edit', id=user.id) }}" method="post">
-
-                        <div class="form-process"></div>
-                        <div class="col-12 form-group">
-                            <label>Имя:</label>
-                            <input type="text" name="name" id="event-registration-name"
-                                class="form-control required" value="{{ user.name | capitalize }}" placeholder="Введите имя">
-                        </div>
-                        <div class="col-12 form-group">
-                            <label>Email:</label>
-                            <input disabled type="email" name="email" id="event-registration-email"
-                                class="form-control required" value="{{ user.email }}" placeholder="Введите email ">
-                        </div>
-
-                        <div class="col-12 form-group">
-                            <label>Телефон:</label>
-                            <input type="text" name="phone" id="event-registration-phone"
-                                class="form-control required" value="{{ user.phone }}"
-                                placeholder="Введите телефон">
-                        </div>
-
-                        <div class="col-12 form-group">
-                            <label>Пароль:</label>
-                            <input type="password" name="password" id="event-registration-password"
-                                class="form-control" value="" placeholder="Введите пароль" />
-                        </div>
-
-                        <div class="col-12 form-group">
-                            <label>Еще разок пароль:</label>
-                            <input type="password" name="repassword" id="event-registration-repassword"
-                                class="form-control" value="" placeholder="Введите пароль еще раз" />
-                        </div>
-
-                        <div class="col-12">
-                            <button type="submit" name="event-registration-submit"
-                                class="btn btn-success">Изменить</button>
-                            <a href="{{ url_for('profile.index') }}" class="btn btn-secondary">Назад</a>
-                        </div>
-
-                    </form>
+                <div class="form-process"></div>
+                <div class="col-12 form-group">
+                    <label>Имя</label>
+                    <input required type="text" name="name" class="form-control custom-input-form" value="{{ user.name | capitalize }}"
+                        placeholder=" Имя">
+                </div>
+                <div class="col-12 form-group">
+                    <label>Email</label>
+                    <input disabled required type="email" name="email" class="form-control custom-input-form" value="{{ user.email }}"
+                        placeholder="Email">
                 </div>
 
-            </div>
+                <div class="col-12 form-group">
+                    <label>Телефон</label>
+                    <input required type="text" name="phone" class="form-control custom-input-form" value="{{ user.phone }}"
+                        placeholder="Телефон">
+                </div>
 
+                <div class="col-12 form-group">
+                    <label>Пароль</label>
+                    <input type="password" name="password" class="form-control custom-input-form" value="" placeholder="Пароль" />
+                </div>
+
+                <div class="col-12 form-group">
+                    <label>Повторить пароль</label>
+                    <input type="password" name="repassword" class="form-control custom-input-form" value=""
+                        placeholder="Введите пароль еще раз" />
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-color-fotty btn-radius-fotty col-6">Изменить</button>
+                    <a href="{{ url_for('profile.index') }}" class="btn btn-secondary btn-radius-fotty-a col-3">Назад</a>
+                </div>
+
+            </form>
         </div>
 
-</section><!-- #content end -->
+    </div>
+
+</div>
+
 {% endblock %}

@@ -10,7 +10,7 @@ from app.database import db
 @profile.route('/')
 @login_required
 def index():
-    return render_template('profile.html', user=current_user, profile=True)
+    return render_template('profile.html', user=current_user, profile=True, title='Профиль')
 
 
 @profile.route('/profile/edit/<int:id>', methods=('GET', 'POST'))
@@ -57,4 +57,4 @@ def edit(id):
         else:
             flash('Данные не прошли валидацию')
 
-    return render_template('profile-edit.html', user=current_user, profile=True)
+    return render_template('profile-edit.html', user=current_user, profile=True, title=f'Редауьтрование профиля № {id}')

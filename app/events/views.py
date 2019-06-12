@@ -16,7 +16,7 @@ def index():
 
     events_ = Event.query.filter_by(status=Event.STATUS_ACTIVATE).all()
 
-    return render_template('events.html', user=current_user, events=events_)
+    return render_template('events.html', user=current_user, events=events_, title='Список событий')
 
 
 @events.route('/create', methods=('GET', 'POST'))
@@ -57,7 +57,7 @@ def create():
         else:
             flash('Данные не прошли проверку!!!')
 
-    return render_template('event-create.html')
+    return render_template('event-create.html', title="Создание события")
 
 
 @events.route('/edit/<int:id>', methods=('GET', 'POST'))
@@ -69,7 +69,7 @@ def edit(id):
     if request.method.__eq__('POST'):
         print('-> POST')
 
-    return render_template('event-edit.html', event=event_)
+    return render_template('event-edit.html', event=event_, title=f'Редауьтрование события № {id}')
 
 
 @events.route('/delete/<int:id>')
