@@ -1,3 +1,4 @@
+import locale
 import logging
 from datetime import datetime
 
@@ -7,10 +8,12 @@ from flask_migrate import Migrate
 from sqlalchemy import exc
 
 from app.auth_.models import User
-from app.events.models import Event
 from app.database import db
 from app.email import mail
+from app.events.models import Event
 from config import Config
+
+locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
 login = LoginManager()
 migrate = Migrate()
