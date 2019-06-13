@@ -30,6 +30,8 @@ class Config:
 
     DEBUG = settings.DEBUG
 
+    UPLOAD_FOLDER = os.path.join(basedir, 'app', 'static', 'files')
+
     @staticmethod
     def init_app(app):
         pass
