@@ -63,8 +63,10 @@ def login():
             else:
                 flash('Пользователь не существует!!!')
         else:
+            text_error = ''
             for error in form_.errors:
-                flash(f'{error}: {form_.errors[error]}')
+                text_error += f"{error}: {form_.errors[error][0]}<br>"
+            flash(text_error)
 
     return render_template('login.html', title='Fotty - Login')
 
@@ -123,8 +125,10 @@ def registration():
             except Exception:
                 flash('При отправки письма произошла ошибка!!!')
         else:
+            text_error = ''
             for error in form_.errors:
-                flash(f'{error}: {form_.errors[error]}')
+                text_error += f"{error}: {form_.errors[error][0]}<br>"
+            flash(text_error)
 
     return render_template('registration.html', title='Fotty - Registration')
 
