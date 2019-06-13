@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 from hashlib import md5
 
-from flask import current_app, flash, jsonify, request
+from flask import current_app, jsonify, request
 from PIL import Image
 
 from app.database import db

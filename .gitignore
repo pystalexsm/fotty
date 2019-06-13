@@ -110,6 +110,7 @@ migrations/*
 
 # Static files
 app/static/.webassets-cache/*
+app/static/files/*
 
 *.DS_Store
 .DS_Store
