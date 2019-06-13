@@ -11,6 +11,7 @@ from app.auth_.models import User
 from app.database import db
 from app.email import mail
 from app.events.models import Event
+from app.files.models import FileEntity, Files
 from config import Config
 
 locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
@@ -37,7 +38,7 @@ def create_app():
 
     @app.shell_context_processor
     def make_shell_context():
-        return dict(db=db, User=User, Event=Event)
+        return dict(db=db, User=User, Event=Event, Files=Files, FileEntity=FileEntity)
 
     @app.context_processor
     def init():
@@ -87,5 +88,8 @@ def create_app():
 
     from app.events import events as events_blueprint
     app.register_blueprint(events_blueprint, url_prefix='/events')
+
+    from app.files import files as files_blueprint
+    app.register_blueprint(files_blueprint, url_prefix='/files')
 
     return app

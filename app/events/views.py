@@ -96,7 +96,7 @@ def edit(id):
         else:
             flash('Данные не прошли проверку!!!')
 
-    return render_template('event-edit.html', event=event_, title=f'Редауьтрование события № {id}')
+    return render_template('event-edit.html', event=event_, title=f'Редактирование события № {id}')
 
 
 @events.route('/delete/<int:id>')

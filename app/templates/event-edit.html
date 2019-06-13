@@ -8,7 +8,14 @@
 
     <div class="row py-5">
         <div class="col-8">
-            <form class="row" action="{{ url_for('events.edit', id=event.id) }}" method="post">
+
+            <div class="d-z">
+                <div class="dz-default dz-message">
+                    <span>Загрузить фотографии</span>
+                </div>
+            </div>
+
+            <form class="row py-4" action="{{ url_for('events.edit', id=event.id) }}" method="post">
 
                 <div class="col-12 form-group">
                     <label>Название:</label>
@@ -36,6 +43,9 @@
 
             </form>
         </div>
+        <div class="col-4">
+            <div class="pictures-preview-wrap"></div>
+        </div>
 
     </div>
 
@@ -45,12 +55,32 @@
 {% block custom_scripts %}
 
 <script>
-    $(function () {
+
+    $(document).ready(function () {
+
+        $('.d-z').dropzone({
+            url: '/files/upload',
+            maxFilesize: 20,
+            acceptedFiles: "image/jpeg,image/png,image/jpg",
+            parallelUploads: 2,
+            dictDefaultMessage: '',
+            init: function () {
+                this.on("success", function (file, inputData) {
+                    var data_ = inputData.data;
+                    console.info(data_);
+                    // $('.pictures-preview-wrap').append(PIC);
+                });
+                this.on("queuecomplete", function (file) {
+                    this.removeAllFiles();
+                });
+            }
+        });
+
         new Datepicker('#date_at', {
             weekStart: 1,
             openOn: 'today',
         });
-    });
+    })
 </script>
 
 {% endblock %}
