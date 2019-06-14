@@ -1,17 +1,20 @@
+import uuid
 from datetime import datetime
+from hashlib import sha256
 
 from flask import jsonify, request
+from flask_login import current_user, login_required
 from sqlalchemy import and_
 
 from app.database import db
-from app.events.models import EventFiles
+from app.events.models import Event, EventFiles
 
 from . import events
 
 
 @events.route('/ajax/bind/eventfile', methods=('POST',))
+@login_required
 def bind_event_and_photo():
-
     """
     Метод для добавления связей фото и события
     """
@@ -54,8 +57,8 @@ def bind_event_and_photo():
 
 
 @events.route('/ajax/unbind/eventfile', methods=('POST',))
+@login_required
 def unbind_event_and_photo():
-
     """
     Метод для удаления связей фото и события
     """
@@ -87,5 +90,44 @@ def unbind_event_and_photo():
 
         else:
             return jsonify(status=-1, massage='Не корректные данные')
+    else:
+        return jsonify(status=-1, massage='Данный метод можно вызвать только через ajax')
+
+
+@events.route('/ajax/generate/token', methods=('POST',))
+@login_required
+def generate_token_event():
+    """
+    Метод для генерации токена
+    """
+
+    event_id = request.form.get('event_id')
+    user_id = current_user.get_id()
+
+    if request.is_xhr:
+        try:
+            event_id = int(event_id)
+
+            event_ = Event.query.filter(and_(
+                Event.id.__eq__(event_id),
+                Event.status.__eq__(Event.STATUS_ACTIVATE)
+            )).first()
+
+            if event_ is not None:
+                string = f"{str(uuid.uuid4())}@--.{user_id}<>|]{event_id}"
+                token = sha256(bytes(string, 'utf8')).hexdigest()
+                if token:
+                    event_.token = token
+                    event_.update_at = datetime.now()
+
+                    db.session.add(event_)
+                    db.session.commit()
+
+                    return jsonify(status=1, massage='OK')
+            else:
+                return jsonify(status=-1, massage='Событие не существует!')
+
+        except (TypeError, ValueError):
+            return jsonify(status=-1, massage='При генерации токена произошла ошиька!')
     else:
         return jsonify(status=-1, massage='Данный метод можно вызвать только через ajax')

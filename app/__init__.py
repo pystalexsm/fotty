@@ -92,4 +92,7 @@ def create_app():
     from app.files import files as files_blueprint
     app.register_blueprint(files_blueprint, url_prefix='/files')
 
+    from app.album import album as album_blueprint
+    app.register_blueprint(album_blueprint, url_prefix='/album')
+
     return app

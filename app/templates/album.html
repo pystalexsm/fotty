@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+{% for file in event.files %}
+    {{ file.file_data.filename }}
+{% endfor %}
+{% endblock %}

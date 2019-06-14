@@ -4,6 +4,7 @@ from datetime import datetime
 from hashlib import md5
 
 from flask import current_app, jsonify, request, url_for
+from flask_login import login_required
 from PIL import Image
 
 from app.database import db
@@ -13,6 +14,7 @@ from . import files
 
 
 @files.route('/upload', methods=('POST',))
+@login_required
 def upload():
     WIDTH = 1200
     HEIGHT = 800
@@ -51,11 +53,7 @@ def upload():
 
                 else:
                     if os.path.exists(os.path.join(current_app.config['UPLOAD_FOLDER'], file_.filename)) is False:
-                        im.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-                        file_.filename = filename
-
-                        db.session.add(file_)
-                        db.session.commit()
+                        im.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file_.filename))
 
         except (IOError, ValueError, FileNotFoundError, TypeError):
             return jsonify(status=-1, message='При загрузки файлов произошла ошибка!'), 200
