@@ -48,7 +48,13 @@
         <div class="col-4">
             <div class="pictures-preview-wrap">
                 {% for photo in event.photos %}
-                    <img height=100 data-id="{{ photo.file_data.id }}" src="{{ url_for('static', filename='files/' + photo.file_data.filename) }}" alt="{{ photo.file_data.filename}}">
+                <div class="d-inline-flex p-2 photo-container--event ">
+                    <img class="img-thumbnail custom-thumbnail"
+                        src="{{ url_for('static', filename='files/' + photo.file_data.filename) }}"
+                        alt="{{ photo.file_data.filename}}">
+                    <i data-id="{{ photo.file_data.id }}"
+                        class="fas fa-trash-alt photo-delete--event js-delete-photo--event"></i>
+                </div>
                 {% endfor %}
             </div>
         </div>
@@ -75,7 +81,12 @@
                     const data_ = inputData.data;
 
                     if (data_) {
-                        const $_tplPreview = $(`<img data-id='${data_.id}' height=100 src='${data_.url}' alt='${data_.filename}'>`)
+                        const $_tplPreview = $(`<div class="d-inline-flex p-2 photo-container--event ">
+                    <img class="img-thumbnail custom-thumbnail"
+                        src="${ data_.url}"
+                        alt="${ data_.filename}">
+                        <i data-id="${ data_.id}" class="fas fa-trash-alt photo-delete--event js-delete-photo--event"></i>
+                </div>`)
                         const eventId = +$('#event_id').data('id');
 
                         if (eventId && data_.id) {
@@ -100,10 +111,35 @@
                         }
                     }
 
-                // todo проверить, добавить превью и отправить ajax для связи картинки и сущности
+                    // todo проверить, добавить превью и отправить ajax для связи картинки и сущности
                 });
                 this.on("queuecomplete", function (file) {
                     this.removeAllFiles();
+                });
+            }
+        });
+
+        $(document).on('click', '.js-delete-photo--event', function () {
+            const _this = this;
+            const eventId = +$('#event_id').data('id');
+            const fileId = $(_this).data('id');
+
+            if (eventId && fileId) {
+                $.ajax({
+                    url: '/events/ajax/unbind/eventfile',
+                    type: "POST",
+                    data: { event_id: eventId, file_id: fileId },
+                    success: (response, textStatus, jqXHR) => {
+                        if (jqXHR.status === 200) {
+                            if (response.status === 1) {
+                                $(_this).parents('.photo-container--event').remove()
+                            } else {
+                                alert('Произошла ошибка... Пожалуйста, попробуйте позже!!!')
+                            }
+                        } else {
+                            alert('Произошла ошибка... Пожалуйста, попробуйте позже!!!')
+                        }
+                    }
                 });
             }
         });

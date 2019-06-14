@@ -12,6 +12,22 @@
     margin: 5em 0;
 }
 
+.custom-thumbnail {
+    height: 120px!important;
+}
+
+.photo-container--event {
+    position: relative;
+}
+
+.photo-delete--event {
+    position: absolute;
+    left: 85%;
+    top: -0.5px;
+    font-size: 1.3em;
+    cursor: pointer;
+}
+
 .datepicker {
     display: block!important;
 }
