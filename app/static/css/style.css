@@ -12,16 +12,8 @@
     margin: 5em 0;
 }
 
-.persent-size {
-    width: 25%;
-}
-
-.grid-item {
-    padding: 2px;
-}
-
 .custom-thumbnail {
-    height: 120px!important;
+    height: 100px!important;
 }
 
 .photo-container--event {
@@ -155,7 +147,7 @@
   .grid__sizer,
   .grid__item {
     position: relative;
-    width: 20%;
+    width: 32.92%;
     min-width: 16.25rem;
   }
 
