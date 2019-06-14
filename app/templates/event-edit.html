@@ -15,7 +15,9 @@
     <hr>
 
     <div class="row py-5">
-        <div class="col-6">
+        <div class="col">
+
+            <div hidden id="event_id" data-id="{{ event.id }}"></div>
 
             <div class="d-z">
                 <div class="dz-default dz-message">
@@ -23,7 +25,17 @@
                 </div>
             </div>
 
-            <div hidden id="event_id" data-id="{{ event.id }}"></div>
+            <div class="pictures-preview-wrap py-3">
+                {% for file in event.files %}
+                <div class="d-inline-flex p-2 photo-container--event ">
+                    <img class="img-thumbnail custom-thumbnail"
+                        src="{{ url_for('static', filename='files/' + file.file_data.filename) }}"
+                        alt="{{ file.file_data.filename}}">
+                    <i data-id="{{ file.file_data.id }}"
+                        class="fas fa-trash-alt photo-delete--event js-delete-photo--event"></i>
+                </div>
+                {% endfor %}
+            </div>
 
             {% if event.token %}
             <div class="d-flex flex-row bd-highlight mb-3 py-3 justify-content">
@@ -69,20 +81,6 @@
 
             </form>
         </div>
-        <div class="col-6">
-            <div class="pictures-preview-wrap">
-                {% for file in event.files %}
-                <div class="d-inline-flex p-2 photo-container--event ">
-                    <img class="img-thumbnail custom-thumbnail"
-                        src="{{ url_for('static', filename='files/' + file.file_data.filename) }}"
-                        alt="{{ file.file_data.filename}}">
-                    <i data-id="{{ file.file_data.id }}"
-                        class="fas fa-trash-alt photo-delete--event js-delete-photo--event"></i>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
     </div>
 
 </div>
