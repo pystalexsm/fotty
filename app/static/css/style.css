@@ -12,6 +12,14 @@
     margin: 5em 0;
 }
 
+.persent-size {
+    width: 25%;
+}
+
+.grid-item {
+    padding: 2px;
+}
+
 .custom-thumbnail {
     height: 120px!important;
 }
@@ -121,5 +129,51 @@
     padding-top: 0.9em;
 }
 
+  /**
+  * Grid styles
+  */
+  .item__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(17, 17, 17, 0.45);
+    transition: background-color .55s ease-in-out;
+  }
+
+  .item__overlay:focus,
+  .item__overlay:hover {
+    background-color: rgba(17, 17, 17, 0.05);
+  }
+
+  .item__overlay:focus > button,
+  .item__overlay:hover > button {
+    opacity: 1;
+  }
+
+  .grid__sizer,
+  .grid__item {
+    position: relative;
+    width: 20%;
+    min-width: 16.25rem;
+  }
+
+  .grid__item {
+    margin-bottom: .9375rem;
+    border-radius: 0.25rem;
+    overflow: hidden;
+  }
+
+  .grid__item--high,
+  .grid__item--high img {
+    height: 30rem;
+  }
+
+  .grid__item img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
 
 

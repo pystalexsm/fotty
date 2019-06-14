@@ -44,7 +44,7 @@
                             <td class="text-center align-middle">{{ event.date_at.strftime('%d.%m.%Y') }}</td>
                             <td class="text-center align-middle">{{ event.place }}</td>
                             <td class="text-center align-middle">{{ event.status }}</td>
-                            <td class="text-center align-middle">{{ event.photos|length }}</td>
+                            <td class="text-center align-middle">{{ event.files|length }}</td>
                             <td class="text-center align-middle">{{ event.created_at.strftime('%d.%m.%Y') }}</td>
                             <td class="text-center align-middle">
                                 <a href="{{ url_for('events.edit', id=event.id) }}"><i style="font-size: 1.3em"

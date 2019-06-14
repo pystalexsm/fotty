@@ -3,7 +3,41 @@
 {% block navbar %}{% endblock %}
 
 {% block content %}
+
 {% for file in event.files %}
-    {{ file.file_data.filename }}
+<!-- <img class="grid-item persent-size" src=" {{ url_for('static', filename='files/' + file.file_data.filename) }}"> -->
 {% endfor %}
+
+<div class="container-fluid gallery bg-faded">
+    <h1 class="text-center">{{ event.title }}</h1>
+
+    <hr>
+
+    <div class="grid">
+        {% for file in event.files %}
+            <div href="#" class="grid__item grid__sizer">
+                <div class="item__overlay"></div>
+                <img src="{{ url_for('static', filename='files/' + file.file_data.filename) }}" alt="Credits to Unsplash.com" />
+            </div>
+        {% else %}
+            <p class="text-center">Нет еще фото</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block custom_scripts %}
+
+<script>
+    $(function () {
+        $('.grid').masonry({
+            columnWidth: '.grid__sizer',
+            itemSelector: '.grid__item',
+            percentPosition: true,
+            gutter: 15,
+        });
+    });
+</script>
+
 {% endblock %}

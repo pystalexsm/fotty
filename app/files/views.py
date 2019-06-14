@@ -53,6 +53,7 @@ def upload():
 
                 else:
                     if os.path.exists(os.path.join(current_app.config['UPLOAD_FOLDER'], file_.filename)) is False:
+                        im.thumbnail((WIDTH, HEIGHT), Image.ANTIALIAS)
                         im.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file_.filename))
 
         except (IOError, ValueError, FileNotFoundError, TypeError):
