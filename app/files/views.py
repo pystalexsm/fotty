@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 from hashlib import md5
 
-from flask import current_app, jsonify, request
+from flask import current_app, jsonify, request, url_for
 from PIL import Image
 
 from app.database import db
@@ -60,4 +60,7 @@ def upload():
         except (IOError, ValueError, FileNotFoundError, TypeError):
             return jsonify(status=-1, message='При загрузки файлов произошла ошибка!'), 200
 
-    return jsonify(status=1, message='OK', data={'id': file_.id, 'filename': file_.filename}), 200
+    return jsonify(
+        status=1, message='OK',
+        data={'id': file_.id, 'filename': file_.filename,
+              'url': url_for('static', filename=f'files/{filename}')}), 200

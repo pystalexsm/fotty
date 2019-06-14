@@ -15,6 +15,8 @@
                 </div>
             </div>
 
+            <div hidden id="event_id" data-id="{{ event.id }}"></div>
+
             <form class="row py-4" action="{{ url_for('events.edit', id=event.id) }}" method="post">
 
                 <div class="col-12 form-group">
@@ -44,7 +46,11 @@
             </form>
         </div>
         <div class="col-4">
-            <div class="pictures-preview-wrap"></div>
+            <div class="pictures-preview-wrap">
+                {% for photo in event.photos %}
+                    <img height=100 data-id="{{ photo.file_data.id }}" src="{{ url_for('static', filename='files/' + photo.file_data.filename) }}" alt="{{ photo.file_data.filename}}">
+                {% endfor %}
+            </div>
         </div>
 
     </div>
@@ -66,11 +72,35 @@
             dictDefaultMessage: '',
             init: function () {
                 this.on("success", function (file, inputData) {
-                    var data_ = inputData.data;
-                    console.info(data_);
-                    // $('.pictures-preview-wrap').append(PIC);
+                    const data_ = inputData.data;
 
-                    // todo проверить, добавить превью и отправить ajax для связи картинки и сущности
+                    if (data_) {
+                        const $_tplPreview = $(`<img data-id='${data_.id}' height=100 src='${data_.url}' alt='${data_.filename}'>`)
+                        const eventId = +$('#event_id').data('id');
+
+                        if (eventId && data_.id) {
+                            $.ajax({
+                                url: '/events/ajax/bind/eventfile',
+                                type: "POST",
+                                data: { event_id: eventId, file_id: data_.id },
+                                success: (response, textStatus, jqXHR) => {
+                                    if (jqXHR.status === 200) {
+                                        if (response.status === 1) {
+                                            $('.pictures-preview-wrap').append($_tplPreview);
+                                        } else {
+                                            alert('Произошла ошибка... Пожалуйста, попробуйте позже!!!')
+                                        }
+                                    } else {
+                                        alert('Произошла ошибка... Пожалуйста, попробуйте позже!!!')
+                                    }
+                                }
+                            });
+                        } else {
+                            alert('Произошла ошибка... Пожалуйста, попробуйте позже!!!')
+                        }
+                    }
+
+                // todo проверить, добавить превью и отправить ajax для связи картинки и сущности
                 });
                 this.on("queuecomplete", function (file) {
                     this.removeAllFiles();

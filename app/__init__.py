@@ -10,8 +10,8 @@ from sqlalchemy import exc
 from app.auth_.models import User
 from app.database import db
 from app.email import mail
-from app.events.models import Event
-from app.files.models import FileEntity, Files
+from app.events.models import Event, EventFiles
+from app.files.models import Files
 from config import Config
 
 locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
@@ -38,7 +38,7 @@ def create_app():
 
     @app.shell_context_processor
     def make_shell_context():
-        return dict(db=db, User=User, Event=Event, Files=Files, FileEntity=FileEntity)
+        return dict(db=db, User=User, Event=Event, Files=Files, EventFiles=EventFiles)
 
     @app.context_processor
     def init():
