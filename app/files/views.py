@@ -61,4 +61,4 @@ def upload():
     return jsonify(
         status=1, message='OK',
         data={'id': file_.id, 'filename': file_.filename,
-              'url': url_for('static', filename=f'files/{filename}')}), 200
+              'url': url_for('static', filename=f'files/{file_.filename}')}), 200
