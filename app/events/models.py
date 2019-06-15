@@ -23,7 +23,7 @@ class Event(db.Model):
     status = db.Column(db.Integer, nullable=False, comment='Статус', default=1)
     created_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата создвния')
     updated_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата обновления')
-    files = db.relationship('EventFiles')  # todo уточнить, как лучше делать!!!
+    files = db.relationship('EventFiles', order_by="asc(EventFiles.sort)")  # todo уточнить, как лучше делать!!!
 
     def __repr__(self):
         return '<Event %r>' % self.title
@@ -41,6 +41,7 @@ class EventFiles(db.Model):
     file_id = db.Column(db.BigInteger, db.ForeignKey('files.id'), nullable=False, comment='Id файла')
     event_id = db.Column(db.BigInteger, db.ForeignKey('events.id'), nullable=False, comment='Id сущности')
     created_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата создания')
+    sort = db.Column(db.Integer, nullable=True, comment='Для сортировка фотографий')
     file_data = db.relationship('Files')
 
     def __repr__(self):

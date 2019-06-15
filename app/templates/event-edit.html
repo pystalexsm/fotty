@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <div class="pictures-preview-wrap py-3">
+            <div id="sortable" class="pictures-preview-wrap py-3">
                 {% for file in event.files %}
                 <div class="d-inline-flex p-2 photo-container--event ">
                     <img class="img-thumbnail custom-thumbnail"
@@ -91,6 +91,34 @@
 <script>
 
     $(document).ready(function () {
+
+        $("#sortable").sortable({
+            stop: function () {
+                const eventId = +$('#event_id').data('id');
+
+                let = sort = [];
+                $('.photo-container--event').each(function () {
+                    const _this = this;
+                    sort.push(+$(_this).find('.js-delete-photo--event').data('id'));
+                });
+
+                if (eventId && sort.length > 0) {
+                    $.ajax({
+                        url: '/events/ajax/fix/sorting',
+                        type: "POST",
+                        data: { event_id: eventId, sort: sort },
+                        success: (response, textStatus, jqXHR) => {
+                            if (jqXHR.status === 200) {
+                                if (response.status === 1) {
+                                    console.info('OK')
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        $("#sortable").disableSelection();
 
         $('.d-z').dropzone({
             url: '/files/upload',

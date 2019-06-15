@@ -128,6 +128,36 @@ def generate_token_event():
                 return jsonify(status=-1, massage='Событие не существует!')
 
         except (TypeError, ValueError):
-            return jsonify(status=-1, massage='При генерации токена произошла ошиька!')
+            return jsonify(status=-1, massage='При генерации токена произошла ошибка!')
     else:
         return jsonify(status=-1, massage='Данный метод можно вызвать только через ajax')
+
+
+@events.route('ajax/fix/sorting', methods=('POST',))
+@login_required
+def fix_sorting_files():
+    event_id = request.form.get('event_id')
+    sort = request.form.getlist('sort[]')
+
+    if request.is_xhr:
+        files_list = EventFiles.query.filter(and_(
+            EventFiles.event_id.__eq__(event_id),
+            EventFiles.file_id.in_(sort)
+        )).all()
+
+        for key, id_ in enumerate(sort):
+            id_ = int(id_)
+            print(key)
+            for file in files_list:
+                if id_.__eq__(file.file_id):
+                    file.sort = key
+                    db.session.add(file)
+
+        db.session.commit()
+
+        return jsonify(status=1, massage='OK')
+
+    else:
+        return jsonify(status=-1, massage='Данный метод можно вызвать только через ajax')
+
+    return jsonify(status=-1, massage='При сохранении сортировки произошла ошибка!')
