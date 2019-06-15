@@ -11,6 +11,9 @@ def index(token):
     if token:
         event_ = Event.query.filter_by(token=token).first()
 
+        if event_ is None:
+            return abort(404)
+
         return render_template('album.html', event=event_)
     else:
         return abort(404)
