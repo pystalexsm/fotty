@@ -136,6 +136,9 @@ def generate_token_event():
 @events.route('ajax/fix/sorting', methods=('POST',))
 @login_required
 def fix_sorting_files():
+    """
+    Данный метод сохраняет сортировку фото в событии
+    """
     event_id = request.form.get('event_id')
     sort = request.form.getlist('sort[]')
 
@@ -147,7 +150,6 @@ def fix_sorting_files():
 
         for key, id_ in enumerate(sort):
             id_ = int(id_)
-            print(key)
             for file in files_list:
                 if id_.__eq__(file.file_id):
                     file.sort = key
@@ -159,5 +161,3 @@ def fix_sorting_files():
 
     else:
         return jsonify(status=-1, massage='Данный метод можно вызвать только через ajax')
-
-    return jsonify(status=-1, massage='При сохранении сортировки произошла ошибка!')
