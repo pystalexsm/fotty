@@ -18,7 +18,7 @@
 
                 <div class="col-12 form-group">
                     <label>Дата мероприятия:</label>
-                    <input required type="date" id="date_at" name="date_at" class="form-control custom-input-form"
+                    <input required type="text" id="date_at" name="date_at" class="form-control custom-input-form"
                         value="" placeholder="Дата события">
                 </div>
 
@@ -46,9 +46,9 @@
 
 <script>
     $(function () {
-        new Datepicker('#date_at', {
-            weekStart: 1,
-            openOn: 'today',
+        $( "#date_at" ).datepicker({
+            dateFormat: 'dd.mm.yy',
+            'language': 'ru'
         });
     });
 </script>
