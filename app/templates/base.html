@@ -54,12 +54,38 @@
 
     <script src="{{ url_for('static', filename='libs/jquery/jquery-3.4.1.min.js') }}"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js""></script>
-    <script src="{{ url_for('static', filename='libs/dropzone/dropzone.js') }}"></script>
+    <script src=" {{ url_for('static', filename='libs/dropzone/dropzone.js') }}"></script>
     <script src="{{ url_for('static', filename='libs/masonry/masonry.pkgd.min.js') }}"></script>
     <script src="{{ url_for('static', filename='libs/clipboard/clipboard.min.js') }}"></script>
     <script src="{{ url_for('static', filename='libs/fancybox/jquery.fancybox.min.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://kit.fontawesome.com/7832a9139c.js"></script>
+
+    <script>
+        $(function () {
+            $.datepicker.regional['ru'] = {
+                closeText: 'Закрыть',
+                prevText: 'Пред',
+                nextText: 'След',
+                currentText: 'Сегодня',
+                monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+                    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                monthNamesShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн',
+                    'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                dayNames: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
+                dayNamesShort: ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
+                dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                weekHeader: 'Нед',
+                dateFormat: 'dd.mm.yy',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''
+            };
+            $.datepicker.setDefaults($.datepicker.regional['ru']);
+
+        });
+    </script>
 
     {% block custom_scripts %} {% endblock %}
 </body>
