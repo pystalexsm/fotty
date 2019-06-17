@@ -11,7 +11,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app.database import db
 from app.email import send_email
 
-from . import auth_
+from . import auth_, logger
 from .forms import AuthForm, RegisterForm
 from .models import User
 
@@ -28,7 +28,8 @@ def login():
 
             try:
                 user_ = User.query.filter_by(email=email.lower()).first()
-            except (AttributeError, exc.DataError):
+            except (AttributeError, exc.DataError) as ex:
+                logger.exception(ex)
                 user_ = None
 
             if user_ is not None:
@@ -51,7 +52,8 @@ def login():
 
                         return redirect(url_for('.login'))
 
-                    except Exception:
+                    except Exception as ex:
+                        logger.exception(ex)
                         flash('При отправки письма произошла ошибка!!!')
 
                 elif check_password_hash(user_.password, password):
@@ -122,7 +124,8 @@ def registration():
 
                 return redirect(url_for('.login'))
 
-            except Exception:
+            except Exception as ex:
+                logger.exception(ex)
                 flash('При отправки письма произошла ошибка!!!')
         else:
             text_error = ''
@@ -161,11 +164,13 @@ def forgot_password():
 
                         return redirect(url_for('.login'))
 
-                    except Exception:
+                    except Exception as ex:
+                        logger.exception(ex)
                         flash('При отправки письма произршла ошибка!!!')
                 else:
                     flash('Данного адреса не существует!!!')
-            except (AttributeError, exc.DataError):
+            except (AttributeError, exc.DataError) as ex:
+                logger.exception(ex)
                 flash('Данного адреса не существует!!!')
         else:
             flash('Неккоректный email!!!')
@@ -212,8 +217,9 @@ def confirm_email(token):
                 flash('Нет пользователя с таким email!!!')
                 return redirect(url_for('.login'))
 
-    except (BadTimeSignature, BadSignature, AttributeError, exc.DataError):
+    except (BadTimeSignature, BadSignature, AttributeError, exc.DataError) as ex:
         # todo оповещение
+        logger.exception(ex)
         return redirect(url_for('.login'))
 
     return redirect(url_for('.index'))

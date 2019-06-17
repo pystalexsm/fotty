@@ -7,7 +7,7 @@ from sqlalchemy import and_
 from app.database import db
 from app.events.models import Event
 
-from . import events
+from . import events, logger
 
 
 @events.route('/')
@@ -120,7 +120,8 @@ def delete(id):
 
                 return redirect(url_for('events.index'))
 
-        except (TypeError, ValueError):
+        except (TypeError, ValueError) as ex:
+            logger.exception(ex)
             flash('При удалении произошла ошибка!!!')
             return redirect(url_for('events.index'))
 

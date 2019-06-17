@@ -10,7 +10,7 @@ from PIL import Image
 from app.database import db
 from app.files.models import Files
 
-from . import files
+from . import files, logger
 
 
 @files.route('/upload', methods=('POST',))
@@ -56,7 +56,8 @@ def upload():
                         im.thumbnail((WIDTH, HEIGHT), Image.ANTIALIAS)
                         im.save(os.path.join(current_app.config['UPLOAD_FOLDER'], file_.filename))
 
-        except (IOError, ValueError, FileNotFoundError, TypeError):
+        except (IOError, ValueError, FileNotFoundError, TypeError) as ex:
+            logger.exception(ex)
             return jsonify(status=-1, message='При загрузки файлов произошла ошибка!'), 200
 
     return jsonify(
