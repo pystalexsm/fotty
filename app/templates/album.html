@@ -9,7 +9,9 @@
 {% endfor %}
 
 <div class="py-3 container-fluid gallery bg-faded">
-    <h1 class="text-center">{{ event.title }}</h1>
+    <div class="album-header" style="background-image: url('{{ event.background }}')">
+        <p class="text-center album-header-text">{{ event.title }}</p>
+    </div>
     <hr>
 
     <div class="grid">

@@ -167,3 +167,14 @@
     max-width: 100%;
     height: auto;
   }
+
+  .album-header {
+      height: 200px;
+      border-radius: 5px;
+  }
+
+  .album-header-text {
+      font-size: 85px;
+      text-shadow: 3px 3px 4px #FFFFFF;
+  }
+
