@@ -14,7 +14,21 @@ from . import events, logger
 @login_required
 def index():
 
-    events_ = Event.query.filter_by(status=Event.STATUS_ACTIVATE).order_by(Event.date_at.asc()).all()
+    page = request.args.get('page')
+    LIMIT = 15
+
+    if not page:
+        page = 1
+
+    try:
+        page = int(page)
+    except TypeError:
+        page = 1
+
+    events_ = Event.query.filter_by(
+        status=Event.STATUS_ACTIVATE).order_by(
+        Event.date_at.asc()).paginate(
+        page, LIMIT, False)
 
     return render_template('events.html', user=current_user, events=events_, title='Список событий')
 
