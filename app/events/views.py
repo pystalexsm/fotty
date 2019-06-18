@@ -11,19 +11,11 @@ from . import events, logger
 
 
 @events.route('/')
+@events.route('/page/<int:page>')
 @login_required
-def index():
+def index(page=1):
 
-    page = request.args.get('page')
     LIMIT = 15
-
-    if not page:
-        page = 1
-
-    try:
-        page = int(page)
-    except TypeError:
-        page = 1
 
     events_ = Event.query.filter_by(
         status=Event.STATUS_ACTIVATE).order_by(
