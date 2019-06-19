@@ -1,11 +1,14 @@
 import locale
 import logging
-from datetime import datetime
+import os
+from datetime import datetime, timedelta
 
-from flask import Flask, redirect, render_template, url_for
+from celery import Celery
+from celery.schedules import crontab
+from flask import Flask, current_app, redirect, render_template, url_for
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from sqlalchemy import exc
+from sqlalchemy import exc, and_
 
 from app.auth_.models import User
 from app.database import db
@@ -13,6 +16,8 @@ from app.email import mail
 from app.events.models import Event, EventFiles
 from app.files.models import Files
 from config import Config
+
+celery = Celery(__name__, broker=Config.CELERY_BROKER_URL, backend=Config.CELERY_BACKEND_URL)
 
 locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
@@ -22,6 +27,47 @@ migrate = Migrate()
 logging.basicConfig(filename='error.log', format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 logger = logging.getLogger(__name__)
 
+# TODO узнать, можно ли вынести методы связанные с celery?
+@celery.task(name='files.clear_files_not_entitys')
+def clear_files_not_entitys():
+    """Задача. Чекает файлы, если файл за 2 суток не привязан к сущности, то он удалиться
+
+    Returns
+    -------
+    Boolean
+        Возвращает boolean
+    """
+
+    rows = db.session.query(
+        Files, EventFiles).outerjoin(
+        EventFiles, EventFiles.file_id.__eq__(Files.id)).filter(
+        and_(
+            (Files.created_at.__lt__(
+                datetime.now() - timedelta(days=current_app.config['FILE_LIFE_TIME_NOT_CONFIRMED']))),
+            EventFiles.file_id.__eq__(None))).all()
+
+    try:
+        if rows:
+            for file, entity in rows:
+                full_path_del_file = os.path.join(current_app.config['UPLOAD_FOLDER'], file.filename)
+                if os.path.exists(full_path_del_file):
+                    os.remove(full_path_del_file)
+                db.session.delete(file)
+            db.session.commit()
+    except Exception as ex:  # TODO уточнить исключения.
+        logger.exception(ex)
+        return False
+
+    return True
+
+
+@celery.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    """
+    Ставим задачи по расписанию для celerybeat
+    """
+    sender.add_periodic_task(crontab(minute=0, hour=1), clear_files_not_entitys.s())
+
 
 def create_app():
 
@@ -29,6 +75,8 @@ def create_app():
     app.config.from_object(Config)
 
     Config.init_app(app)
+
+    celery.conf.update(app.config)
 
     db.init_app(app)
     mail.init_app(app)

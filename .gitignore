@@ -116,6 +116,7 @@ app/static/files/*
 .DS_Store
 
 *.log
+*.db
 celerybeat.pid
 *Session.sql
 

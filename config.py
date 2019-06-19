@@ -31,6 +31,12 @@ class Config:
     DEBUG = settings.DEBUG
 
     UPLOAD_FOLDER = os.path.join(basedir, 'app', 'static', 'files')
+    # храним файлы без связей (в днях)
+    FILE_LIFE_TIME_NOT_CONFIRMED = settings.FILE_LIFE_TIME_NOT_CONFIRMED
+
+    CELERY_BROKER_URL = settings.CELERY_BROKER_URL
+    CELERY_BACKEND_URL =\
+        f"db+postgresql://{settings.DB_USER}:{settings.DB_PASS}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
 
     @staticmethod
     def init_app(app):
