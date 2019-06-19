@@ -2,7 +2,7 @@ import random
 import string
 from datetime import datetime
 
-from flask import current_app, flash, redirect, render_template, request, url_for, Markup
+from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_login import login_user, logout_user
 from itsdangerous import BadSignature, BadTimeSignature, URLSafeTimedSerializer
 from sqlalchemy import exc
@@ -180,10 +180,18 @@ def forgot_password():
 
 @auth_.route('/confirm/email/<token>')
 def confirm_email(token):
-    """
-    Метод для подтверждения email
-    :param token: токен
-    :return: redirect
+
+    """Для подтверждения email
+
+    Parameters
+    ----------
+    token : string
+        Токен доступа
+
+    Returns
+    -------
+    Flask.redirect(index, login)
+        Рендерит шаблон из папки шаблонов с заданным контекстом
     """
 
     try:
@@ -218,7 +226,7 @@ def confirm_email(token):
                 return redirect(url_for('.login'))
 
     except (BadTimeSignature, BadSignature, AttributeError, exc.DataError) as ex:
-        # todo оповещение
+        # оповещение
         logger.exception(ex)
         return redirect(url_for('.login'))
 

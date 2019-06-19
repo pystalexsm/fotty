@@ -12,7 +12,18 @@ from . import album
 
 @album.route('/show/<string:token>')
 def index(token):
+    """Для отображения страницы с альбомом!!!
 
+    Parameters
+    ----------
+    token : string
+        Токен доступа к альбому события
+
+    Returns
+    -------
+    Flask.render_template
+        Рендерит шаблон из папки шаблонов с заданным контекстом или 404
+    """
     if token:
         event_ = Event.query.filter_by(token=token).first()
 

@@ -43,7 +43,7 @@ def upload():
 
                     im.thumbnail((WIDTH, HEIGHT), Image.ANTIALIAS)
                     im.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-                    # todo пока что так, нужно узнать другой варик!!!
+                    # TODO пока что так, нужно узнать другой варик!!!
                     size = os.stat(os.path.join(current_app.config['UPLOAD_FOLDER'], filename)).st_size
 
                     file_.size = size
