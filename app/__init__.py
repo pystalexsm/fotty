@@ -143,4 +143,7 @@ def create_app():
     from app.album import album as album_blueprint
     app.register_blueprint(album_blueprint, url_prefix='/album')
 
+    from app.blockchain import blockchain as blockchain_blueprint
+    app.register_blueprint(blockchain_blueprint, url_prefix='/blockchain')
+
     return app
