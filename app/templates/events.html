@@ -9,7 +9,7 @@
         </div>
 
         <div class="col-2">
-            <a href="{{ url_for('events.create') }}" class="btn btn-primary btn-color-fotty btn-radius-fotty-a"
+            <a href="{{ url_for('event.create') }}" class="btn btn-primary btn-color-fotty btn-radius-fotty-a"
                 role="button">Cоздать
                 событие <i class="icon-file-add float-right"></i></a>
         </div>
@@ -50,10 +50,10 @@
                             <td class="text-center align-middle">{{ event.files|length }}</td>
                             <td class="text-center align-middle">{{ event.created_at.strftime('%d.%m.%Y') }}</td>
                             <td class="text-center align-middle">
-                                <a href="{{ url_for('events.edit', id=event.id) }}"><i style="font-size: 1.3em"
+                                <a href="{{ url_for('event.edit', id=event.id) }}"><i style="font-size: 1.3em"
                                         class="fas fa-edit"></i></a>
                                 &nbsp;
-                                <a href="{{ url_for('events.delete', id=event.id) }}"><i style="font-size: 1.3em"
+                                <a href="{{ url_for('event.delete', id=event.id) }}"><i style="font-size: 1.3em"
                                         class="fas fa-trash-alt"></i></a>
                             </td>
                         </tr>
@@ -66,17 +66,17 @@
                     <ul class="pagination justify-content-center">
                         {% if events.has_prev %}
                         <li class="page-item"><a class="page-link"
-                                href="{{ url_for('events.index', page=events.page-1) }}">Назад</a></li>
+                                href="{{ url_for('event.index', page=events.page-1) }}">Назад</a></li>
                         {% endif %}
 
                         {% for page in events.iter_pages() %}
                         <li class="page-item {% if page == events.page %} disabled {% endif %}"><a class="page-link"
-                                href="{{ url_for('events.index', page=page) }}">{{ page }}</a></li>
+                                href="{{ url_for('event.index', page=page) }}">{{ page }}</a></li>
                         {% endfor %}
 
                         {% if events.has_next %}
                         <li class="page-item"><a class="page-link"
-                                href="{{ url_for('events.index', page=events.page+1) }}">Вперед</a></li>
+                                href="{{ url_for('event.index', page=events.page+1) }}">Вперед</a></li>
                         {% endif %}
                     </ul>
                 </nav>

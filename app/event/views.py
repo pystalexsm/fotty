@@ -5,13 +5,13 @@ from flask_login import current_user, login_required
 from sqlalchemy import and_
 
 from app.database import db
-from app.events.models import Event
+from app.event.models import Event
 
-from . import events, logger
+from . import event, logger
 
 
-@events.route('/')
-@events.route('/page/<int:page>')
+@event.route('/')
+@event.route('/page/<int:page>')
 @login_required
 def index(page=1):
 
@@ -25,7 +25,7 @@ def index(page=1):
     return render_template('events.html', user=current_user, events=events_, title='Список событий')
 
 
-@events.route('/create', methods=('GET', 'POST'))
+@event.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
 
@@ -66,7 +66,7 @@ def create():
     return render_template('event-create.html', title="Создание события")
 
 
-@events.route('/edit/<int:id>', methods=('GET', 'POST'))
+@event.route('/edit/<int:id>', methods=('GET', 'POST'))
 @login_required
 def edit(id):
     user_id = current_user.get_id()
@@ -105,7 +105,7 @@ def edit(id):
     return render_template('event-edit.html', event=event_, title=f'Редактирование события № {id}')
 
 
-@events.route('/delete/<int:id>')
+@event.route('/delete/<int:id>')
 @login_required
 def delete(id):
     if id:

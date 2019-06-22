@@ -40,7 +40,18 @@
             percentPosition: true,
             gutter: 10,
         });
+
+        Fingerprint2.get(function (components) {
+            const userId = Fingerprint2.x64hash128(components.map(function (pair) {
+                return pair.value
+            }).join(), 31);
+
+            console.info(userId);
+
+        });
+
     });
+
 </script>
 
 {% endblock %}

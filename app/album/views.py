@@ -4,7 +4,7 @@ from random import choice
 
 from flask import abort, render_template, url_for
 
-from app.events.models import Event
+from app.event.models import Event
 from config import basedir
 
 from . import album

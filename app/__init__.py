@@ -13,7 +13,7 @@ from sqlalchemy import exc, and_
 from app.auth_.models import User
 from app.database import db
 from app.email import mail
-from app.events.models import Event, EventFiles
+from app.event.models import Event, EventFiles
 from app.files.models import Files
 from config import Config
 
@@ -134,8 +134,8 @@ def create_app():
     from app.profile import profile as profile_blueprint
     app.register_blueprint(profile_blueprint, url_prefix='/')
 
-    from app.events import events as events_blueprint
-    app.register_blueprint(events_blueprint, url_prefix='/events')
+    from app.event import event as event_blueprint
+    app.register_blueprint(event_blueprint, url_prefix='/events')
 
     from app.files import files as files_blueprint
     app.register_blueprint(files_blueprint, url_prefix='/files')

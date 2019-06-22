@@ -8,7 +8,7 @@
 
     <div class="row py-4">
         <div class="col-8">
-            <form class="row" action="{{ url_for('events.create') }}" method="post">
+            <form class="row" action="{{ url_for('event.create') }}" method="post">
 
                 <div class="col-12 form-group">
                     <label>Название:</label>
@@ -31,7 +31,7 @@
                 <div class="col-12">
                     <button type="submit"
                         class="btn btn-primary btn-color-fotty btn-radius-fotty col-6">Сохранить</button>
-                    <a href="{{ url_for('events.index') }}" class="btn btn-secondary btn-radius-fotty-a col-2">Назад</a>
+                    <a href="{{ url_for('event.index') }}" class="btn btn-secondary btn-radius-fotty-a col-2">Назад</a>
                 </div>
 
             </form>
