@@ -1,8 +1,8 @@
 from app.album.views import album as album_blueprint
 from app.auth_.views import auth_ as auth_blueprint
 from app.blockchain.views import blockchain as blockchain_blueprint
-from app.event.views import event as event_blueprint
 from app.event.ajax import event_ajax as event_ajax_blueprint
+from app.event.views import event as event_blueprint
 from app.files.views import files as files_blueprint
 from app.profile.views import profile as profile_blueprint
 

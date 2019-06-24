@@ -11,13 +11,14 @@ from app import create_app
 from app.database import db
 from app.event.models import EventFiles
 from app.files.models import Files
-from config import Config
 
 logger = logging.getLogger(__name__)
 
 flask_app = create_app()
 
-celery_app = Celery(__name__, broker=Config.CELERY_BROKER_URL, backend=Config.CELERY_BACKEND_URL)
+celery_app = Celery(
+    __name__, broker=flask_app.config['CELERY_BROKER_URL'],
+    backend=flask_app.config['CELERY_BACKEND_URL'])
 
 
 @celery_app.task
