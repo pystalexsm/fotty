@@ -1,8 +1,9 @@
+import logging
 import random
 import string
 from datetime import datetime
 
-from flask import current_app, flash, redirect, render_template, request, url_for
+from flask import Blueprint, current_app, flash, redirect, render_template, request, url_for
 from flask_login import login_user, logout_user
 from itsdangerous import BadSignature, BadTimeSignature, URLSafeTimedSerializer
 from sqlalchemy import exc
@@ -11,9 +12,12 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app.database import db
 from app.email import send_email
 
-from . import auth_, logger
-from .forms import AuthForm, RegisterForm
-from .models import User
+from app.auth_.forms import AuthForm, RegisterForm
+from app.auth_.models import User
+
+auth_ = Blueprint('auth_', __name__, url_prefix='/auth')
+
+logger = logging.getLogger(__name__)
 
 
 @auth_.route('/login', methods=('GET', 'POST'))
@@ -180,7 +184,6 @@ def forgot_password():
 
 @auth_.route('/confirm/email/<token>')
 def confirm_email(token):
-
     """Для подтверждения email
 
     Parameters

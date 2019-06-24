@@ -2,12 +2,12 @@ import os
 from glob import glob
 from random import choice
 
-from flask import abort, render_template, url_for
+from flask import Blueprint, abort, render_template, url_for
 
 from app.event.models import Event
 from config import basedir
 
-from . import album
+album = Blueprint('album', __name__, url_prefix='/album')
 
 
 @album.route('/show/<string:token>')

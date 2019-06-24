@@ -7,17 +7,12 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from sqlalchemy import exc
 
-from app.album import album as album_blueprint
-from app.auth_ import auth_ as auth_blueprint
 from app.auth_.models import User
-from app.blockchain import blockchain as blockchain_blueprint
+from app.blueprints import init_blueprint
 from app.database import db
 from app.email import mail
-from app.event import event as event_blueprint
 from app.event.models import Event, EventFiles
-from app.files import files as files_blueprint
 from app.files.models import Files
-from app.profile import profile as profile_blueprint
 from config import Config
 
 locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
@@ -86,11 +81,6 @@ def create_app():
     def unauthorized_callback():
         return redirect(url_for('auth_.login'))
 
-    app.register_blueprint(auth_blueprint, url_prefix='/auth')
-    app.register_blueprint(profile_blueprint, url_prefix='/')
-    app.register_blueprint(event_blueprint, url_prefix='/events')
-    app.register_blueprint(files_blueprint, url_prefix='/files')
-    app.register_blueprint(album_blueprint, url_prefix='/album')
-    app.register_blueprint(blockchain_blueprint, url_prefix='/blockchain')
+    init_blueprint(app)
 
     return app

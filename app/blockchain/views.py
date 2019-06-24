@@ -1,5 +1,10 @@
-from . import blockchain, logger
-from flask import Markup
+import logging
+
+from flask import Blueprint, Markup
+
+blockchain = Blueprint('blockchain', __name__, url_prefix='/blockchain')
+
+logger = logging.getLogger(__name__)
 
 
 @blockchain.route('/')

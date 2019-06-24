@@ -1,10 +1,15 @@
-from flask import flash, render_template, request, redirect, url_for
+import logging
+
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 
-from . import profile
 from app.auth_.models import User
 from app.database import db
+
+profile = Blueprint('profile', __name__)
+
+logger = logging.getLogger(__name__)
 
 
 @profile.route('/')

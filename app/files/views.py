@@ -1,16 +1,19 @@
+import logging
 import os
 import uuid
 from datetime import datetime
 from hashlib import md5
 
-from flask import current_app, jsonify, request, url_for
+from flask import Blueprint, current_app, jsonify, request, url_for
 from flask_login import login_required
 from PIL import Image
 
 from app.database import db
 from app.files.models import Files
 
-from . import files, logger
+files = Blueprint('files', __name__, url_prefix='/files')
+
+logger = logging.getLogger(__name__)
 
 
 @files.route('/upload', methods=('POST',))

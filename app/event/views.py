@@ -1,13 +1,16 @@
+import logging
 from datetime import datetime
 
-from flask import flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import and_
 
 from app.database import db
 from app.event.models import Event
 
-from . import event, logger
+event = Blueprint('event', __name__, url_prefix='/events')
+
+logger = logging.getLogger(__name__)
 
 
 @event.route('/')
@@ -124,12 +127,12 @@ def delete(id):
 
                 flash(f'Успешное удаление события № {id}')
 
-                return redirect(url_for('events.index'))
+                return redirect(url_for('event.index'))
 
         except (TypeError, ValueError) as ex:
             logger.exception(ex)
             flash('При удалении произошла ошибка!!!')
-            return redirect(url_for('events.index'))
+            return redirect(url_for('event.index'))
 
     flash('При удалении произошла ошибка!!!')
-    return redirect(url_for('events.index'))
+    return redirect(url_for('event.index'))

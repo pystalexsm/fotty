@@ -1,18 +1,21 @@
+import logging
 import uuid
 from datetime import datetime
 from hashlib import sha256
 
-from flask import jsonify, request
+from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
 from sqlalchemy import and_
 
 from app.database import db
 from app.event.models import Event, EventFiles
 
-from . import event
+event_ajax = Blueprint('event_ajax', __name__, url_prefix='/events/ajax/')
+
+logger = logging.getLogger(__name__)
 
 
-@event.route('/ajax/bind/eventfile', methods=('POST',))
+@event_ajax.route('/bind/eventfile', methods=('POST',))
 @login_required
 def bind_event_and_photo():
     """
@@ -56,7 +59,7 @@ def bind_event_and_photo():
         return jsonify(status=-1, massage='Данный метод можно вызвать только через ajax')
 
 
-@event.route('/ajax/unbind/eventfile', methods=('POST',))
+@event_ajax.route('/unbind/eventfile', methods=('POST',))
 @login_required
 def unbind_event_and_photo():
     """
@@ -94,7 +97,7 @@ def unbind_event_and_photo():
         return jsonify(status=-1, massage='Данный метод можно вызвать только через ajax')
 
 
-@event.route('/ajax/generate/token', methods=('POST',))
+@event_ajax.route('/generate/token', methods=('POST',))
 @login_required
 def generate_token_event():
     """
@@ -133,7 +136,7 @@ def generate_token_event():
         return jsonify(status=-1, massage='Данный метод можно вызвать только через ajax')
 
 
-@event.route('ajax/fix/sorting', methods=('POST',))
+@event_ajax.route('/fix/sorting', methods=('POST',))
 @login_required
 def fix_sorting_files():
     """
