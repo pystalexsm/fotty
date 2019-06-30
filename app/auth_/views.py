@@ -4,7 +4,7 @@ import string
 from datetime import datetime
 
 from flask import Blueprint, current_app, flash, redirect, render_template, request, url_for
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 from itsdangerous import BadSignature, BadTimeSignature, URLSafeTimedSerializer
 from sqlalchemy import exc
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -22,6 +22,11 @@ logger = logging.getLogger(__name__)
 
 @auth_.route('/login', methods=('GET', 'POST'))
 def login():
+
+    if current_user.is_authenticated:
+        return redirect(url_for("profile.index"))
+
+    print(current_user.is_authenticated)
 
     form_ = AuthForm(request.form)
 
@@ -85,6 +90,9 @@ def registration():
     :rtype: flask.render_template
     """
 
+    if current_user.is_authenticated:
+        return redirect(url_for("profile.index"))
+
     form_ = RegisterForm(request.form)
 
     if request.method.__eq__('POST'):
@@ -147,6 +155,9 @@ def registration():
 
 @auth_.route('/forgot', methods=('GET', 'POST'))
 def forgot_password():
+
+    if current_user.is_authenticated:
+        return redirect(url_for("profile.index"))
 
     if request.method.__eq__('POST'):
         email = request.form.get('email')
