@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash
 
 from app.auth_.models import User
 from app.database import db
+from app.helpers import clear_phone
 
 profile = Blueprint('profile', __name__)
 
@@ -29,11 +30,7 @@ def edit(id):
         repasswd = request.form.get('repassword')
 
         # обработка телефона
-        phone = phone.replace('(', '')
-        phone = phone.replace(')', '')
-        phone = phone.replace('+', '')
-        phone = phone.replace('-', '')
-        phone = phone.replace(' ', '')
+        phone = clear_phone(phone)
 
         if name and phone:
             user_ = User.query.filter_by(id=id).first()

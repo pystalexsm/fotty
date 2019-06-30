@@ -4,16 +4,16 @@ import string
 from datetime import datetime
 
 from flask import Blueprint, current_app, flash, redirect, render_template, request, url_for
-from flask_login import login_user, logout_user, current_user
+from flask_login import current_user, login_user, logout_user
 from itsdangerous import BadSignature, BadTimeSignature, URLSafeTimedSerializer
 from sqlalchemy import exc
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app.database import db
-from app.email import send_email
-
 from app.auth_.forms import AuthForm, RegisterForm
 from app.auth_.models import User
+from app.database import db
+from app.email import send_email
+from app.helpers import clear_phone
 
 auth_ = Blueprint('auth_', __name__, url_prefix='/auth')
 
@@ -103,11 +103,7 @@ def registration():
             phone = request.form.get('phone')
 
             # обработка телефона
-            phone = phone.replace('(', '')
-            phone = phone.replace(')', '')
-            phone = phone.replace('+', '')
-            phone = phone.replace('-', '')
-            phone = phone.replace(' ', '')
+            phone = clear_phone(phone)
 
             user = User()
             user.name = user_name.strip().lower()

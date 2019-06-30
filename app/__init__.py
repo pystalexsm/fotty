@@ -17,9 +17,6 @@ from config import Config
 
 locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
-login = LoginManager()
-migrate = Migrate()
-
 logging.basicConfig(filename='error.log', format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -33,9 +30,13 @@ def create_app():
 
     db.init_app(app)
     mail.init_app(app)
+
+    migrate = Migrate()
     migrate.init_app(app, db)
 
+    login = LoginManager()
     login.init_app(app)
+    login.login_view = "auth_.login"
 
     @app.shell_context_processor
     def make_shell_context():
