@@ -24,12 +24,12 @@
         <div class="col-4">
             <form action="{{ url_for('auth_.login') }}" method="post">
                 <div class="form-group">
-                    <input type="email" name="email" class="form-control custom-input-form" aria-describedby="emailHelp" placeholder="Email">
+                    {{ form.email(placeholder="Введите электронный адрес") }}
                 </div>
                 <div class="form-group">
-                    <input type="password" name="password" class="form-control custom-input-form" placeholder="Пароль">
+                    {{ form.password(placeholder="Введите пароль") }}
                 </div>
-                <button type="submit" class="btn btn-primary btn-color-fotty btn-radius-fotty col-8">Войти</button>
+                {{ form.submit() }}
                 &nbsp;&nbsp;
                 <a class="link-login-fotty-forgot" href="{{ url_for('auth_.forgot_password') }}">Забыли пароль?</a>
             </form>

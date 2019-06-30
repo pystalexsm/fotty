@@ -74,11 +74,16 @@ def login():
                 text_error += f"{error}: {form_.errors[error][0]}<br>"
             flash(text_error)
 
-    return render_template('login.html', title='Fotty - Login')
+    return render_template('login.html', title='Fotty - Login', form=form_)
 
 
 @auth_.route('/registration', methods=('POST', 'GET'))
 def registration():
+    """Метод регистрации
+
+    :return: страницу
+    :rtype: flask.render_template
+    """
 
     form_ = RegisterForm(request.form)
 
@@ -137,7 +142,7 @@ def registration():
                 text_error += f"{error}: {form_.errors[error][0]}<br>"
             flash(text_error)
 
-    return render_template('registration.html', title='Fotty - Registration')
+    return render_template('registration.html', title='Fotty - Registration', form=form_)
 
 
 @auth_.route('/forgot', methods=('GET', 'POST'))
