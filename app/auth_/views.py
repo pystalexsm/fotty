@@ -93,7 +93,7 @@ def login_process():
             text_error += f"{error}: {form_.errors[error][0]}<br>"
         flash(text_error)
 
-    return render_template('login.html', title='Fotty - Login', form=form_)
+    return redirect(url_for('auth_.login'))
 
 
 @auth_.route('/registration', methods=('GET',))
@@ -173,52 +173,68 @@ def registration_process():
                 text_error += f"{error}: {form_.errors[error][0]}<br>"
             flash(text_error)
 
-    return render_template('registration.html', title='Fotty - Registration', form=form_)
+    return redirect(url_for('auth_.registration'))
 
 
-@auth_.route('/forgot', methods=('GET', 'POST'))
+@auth_.route('/forgot', methods=('GET',))
 def forgot_password():
+    """Отобразить форму восстановления доступа
+
+    :return: страницу
+    :rtype: flask.render_template
+    """
 
     if current_user.is_authenticated:
         return redirect(url_for("profile.index"))
 
-    if request.method.__eq__('POST'):
-        email = request.form.get('email')
-        if email is not None:
-            try:
-                user_ = User.query.filter_by(email=email.lower()).first()
-                if user_ is not None:
-                    chars = string.ascii_letters + string.digits
-                    passwd = ''.join(random.choice(chars) for i in range(12))
-
-                    user_.password = generate_password_hash(passwd)
-                    try:
-                        send_email(
-                            email,
-                            'Новый пароль для сервиса Fotty',
-                            '/email/forgot-passwd',
-                            passwd=passwd
-                        )
-
-                        flash('Письмо отправлено!!!')
-
-                        db.session.add(user_)
-                        db.session.commit()
-
-                        return redirect(url_for('.login'))
-
-                    except Exception as ex:
-                        logger.exception(ex)
-                        flash('При отправки письма произршла ошибка!!!')
-                else:
-                    flash('Данного адреса не существует!!!')
-            except (AttributeError, exc.DataError) as ex:
-                logger.exception(ex)
-                flash('Данного адреса не существует!!!')
-        else:
-            flash('Неккоректный email!!!')
-
     return render_template('forgot-password.html', title='Fotty - forgot')
+
+
+@auth_.route('/forgot-process', methods=('POST',))
+def forgot_password_process():
+
+    """Процесс восстановления доступа
+
+    :return: страницу
+    :rtype: flask.render_template
+    """
+
+    email = request.form.get('email')
+    if email is not None:
+        try:
+            user_ = User.query.filter_by(email=email.lower()).first()
+            if user_ is not None:
+                chars = string.ascii_letters + string.digits
+                passwd = ''.join(random.choice(chars) for i in range(12))
+
+                user_.password = generate_password_hash(passwd)
+                try:
+                    send_email(
+                        email,
+                        'Новый пароль для сервиса Fotty',
+                        '/email/forgot-passwd',
+                        passwd=passwd
+                    )
+
+                    flash('Письмо отправлено!!!')
+
+                    db.session.add(user_)
+                    db.session.commit()
+
+                    return redirect(url_for('auth_.login'))
+
+                except Exception as ex:
+                    logger.exception(ex)
+                    flash('При отправки письма произршла ошибка!!!')
+            else:
+                flash('Данного адреса не существует!!!')
+        except (AttributeError, exc.DataError) as ex:
+            logger.exception(ex)
+            flash('Данного адреса не существует!!!')
+    else:
+        flash('Неккоректный email!!!')
+
+    return redirect(url_for('auth_.forgot_password'))
 
 
 @auth_.route('/confirm/email/<token>')
