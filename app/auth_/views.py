@@ -20,69 +20,83 @@ auth_ = Blueprint('auth_', __name__, url_prefix='/auth')
 logger = logging.getLogger(__name__)
 
 
-@auth_.route('/login', methods=('GET', 'POST'))
+@auth_.route('/login', methods=('GET',))
 def login():
+    """Для отображения формы auth
 
+    :return: Html страница
+    :rtype: Flask.render_template.html
+    """
     if current_user.is_authenticated:
         return redirect(url_for("profile.index"))
 
-    print(current_user.is_authenticated)
-
-    form_ = AuthForm(request.form)
-
-    if request.method.__eq__('POST'):
-        if form_.validate():
-            email = request.form.get('email')
-            password = request.form.get('password')
-
-            try:
-                user_ = User.query.filter_by(email=email.lower()).first()
-            except (AttributeError, exc.DataError) as ex:
-                logger.exception(ex)
-                user_ = None
-
-            if user_ is not None:
-                if user_.confirmed.__ne__(True):
-                    try:
-
-                        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-                        token = serializer.dumps(user_.email, salt=current_app.config['MAIL_CONFIRM_SALT'])
-
-                        link = request.url_root.rstrip('/') + url_for('.confirm_email', token=token)
-
-                        send_email(
-                            user_.email,
-                            'Подтвердите почту на сервисе Fotty',
-                            '/email/confirmed_email',
-                            link=link
-                        )
-
-                        flash('Письмо отправлено!!!')
-
-                        return redirect(url_for('.login'))
-
-                    except Exception as ex:
-                        logger.exception(ex)
-                        flash('При отправки письма произошла ошибка!!!')
-
-                elif check_password_hash(user_.password, password):
-                    login_user(user=user_, remember=True)
-
-                    return redirect(url_for('profile.index'))
-                else:
-                    flash('Не верный пароль!!!')
-            else:
-                flash('Пользователь не существует!!!')
-        else:
-            text_error = ''
-            for error in form_.errors:
-                text_error += f"{error}: {form_.errors[error][0]}<br>"
-            flash(text_error)
+    form_ = AuthForm()
 
     return render_template('login.html', title='Fotty - Login', form=form_)
 
 
-@auth_.route('/registration', methods=('POST', 'GET'))
+@auth_.route('login-process', methods=('POST',))
+def login_process():
+    """Процесс авторизации
+
+    :return: Html страница
+    :rtype: Flask.render_template.html
+    """
+
+    form_ = AuthForm(request.form)
+
+    if form_.validate():
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        try:
+            user_ = User.query.filter_by(email=email.lower()).first()
+        except (AttributeError, exc.DataError) as ex:
+            logger.exception(ex)
+            user_ = None
+
+        if user_ is not None:
+            if user_.confirmed.__ne__(True):
+                try:
+
+                    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+                    token = serializer.dumps(user_.email, salt=current_app.config['MAIL_CONFIRM_SALT'])
+
+                    link = request.url_root.rstrip('/') + url_for('.confirm_email', token=token)
+
+                    send_email(
+                        user_.email,
+                        'Подтвердите почту на сервисе Fotty',
+                        '/email/confirmed_email',
+                        link=link
+                    )
+
+                    flash('Письмо отправлено!!!')
+
+                    return redirect(url_for('.login'))
+
+                except Exception as ex:
+                    logger.exception(ex)
+                    flash('При отправки письма произошла ошибка!!!')
+
+            elif check_password_hash(user_.password, password):
+                login_user(user=user_, remember=True)
+
+                return redirect(url_for('profile.index'))
+            else:
+                flash('Не верный пароль!!!')
+        else:
+            flash('Пользователь не существует!!!')
+    else:
+        text_error = ''
+        for error in form_.errors:
+            text_error += f"{error}: {form_.errors[error][0]}<br>"
+        flash(text_error)
+
+    return render_template('login.html', title='Fotty - Login', form=form_)
+
+
+@auth_.route('/registration', methods=('GET',))
 def registration():
     """Метод регистрации
 
@@ -92,6 +106,19 @@ def registration():
 
     if current_user.is_authenticated:
         return redirect(url_for("profile.index"))
+
+    form_ = RegisterForm()
+
+    return render_template('registration.html', title='Fotty - Registration', form=form_)
+
+
+@auth_.route('reg-process', methods=('POST',))
+def registration_process():
+    """Процесс регистрации
+
+    :return: Html страница
+    :rtype: Flask.render_template.html
+    """
 
     form_ = RegisterForm(request.form)
 
@@ -135,7 +162,7 @@ def registration():
 
                 flash('Письмо отправлено!!!')
 
-                return redirect(url_for('.login'))
+                return redirect(url_for('auth_.login'))
 
             except Exception as ex:
                 logger.exception(ex)

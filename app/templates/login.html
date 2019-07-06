@@ -22,7 +22,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-4">
-            <form action="{{ url_for('auth_.login') }}" method="post">
+            <form action="{{ url_for('auth_.login_process') }}" method="post">
                 <div class="form-group">
                     {{ form.email(placeholder="Введите электронный адрес") }}
                 </div>
