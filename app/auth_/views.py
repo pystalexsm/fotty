@@ -35,7 +35,7 @@ def login():
     return render_template('login.html', title='Fotty - Login', form=form_)
 
 
-@auth_.route('login-process', methods=('POST',))
+@auth_.route('/login-process', methods=('POST',))
 def login_process():
     """Процесс авторизации
 
@@ -112,7 +112,7 @@ def registration():
     return render_template('registration.html', title='Fotty - Registration', form=form_)
 
 
-@auth_.route('reg-process', methods=('POST',))
+@auth_.route('/reg-process', methods=('POST',))
 def registration_process():
     """Процесс регистрации
 
@@ -122,56 +122,55 @@ def registration_process():
 
     form_ = RegisterForm(request.form)
 
-    if request.method.__eq__('POST'):
-        if form_.validate():
-            user_name = request.form.get('name')
-            email = request.form.get('email')
-            password = request.form.get('password')
-            phone = request.form.get('phone')
+    if form_.validate():
+        user_name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        phone = request.form.get('phone')
 
-            # обработка телефона
-            phone = clear_phone(phone)
+        # обработка телефона
+        phone = clear_phone(phone)
 
-            user = User()
-            user.name = user_name.strip().lower()
-            user.email = email.lower()
-            user.password = generate_password_hash(password)
+        user = User()
+        user.name = user_name.strip().lower()
+        user.email = email.lower()
+        user.password = generate_password_hash(password)
 
-            user.created_at = datetime.now()
-            user.updated_at = datetime.now()
+        user.created_at = datetime.now()
+        user.updated_at = datetime.now()
 
-            user.phone = phone
-            user.confirmed = False
+        user.phone = phone
+        user.confirmed = False
 
-            db.session.add(user)
-            db.session.commit()
+        db.session.add(user)
+        db.session.commit()
 
-            try:
+        try:
 
-                serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-                token = serializer.dumps(user.email, salt=current_app.config['MAIL_CONFIRM_SALT'])
+            serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+            token = serializer.dumps(user.email, salt=current_app.config['MAIL_CONFIRM_SALT'])
 
-                link = request.url_root.rstrip('/') + url_for('.confirm_email', token=token)
+            link = request.url_root.rstrip('/') + url_for('.confirm_email', token=token)
 
-                send_email(
-                    email,
-                    'Подтвердите почту на сервисе Fotty',
-                    '/email/confirmed_email',
-                    link=link
-                )
+            send_email(
+                email,
+                'Подтвердите почту на сервисе Fotty',
+                '/email/confirmed_email',
+                link=link
+            )
 
-                flash('Письмо отправлено!!!')
+            flash('Письмо отправлено!!!')
 
-                return redirect(url_for('auth_.login'))
+            return redirect(url_for('auth_.login'))
 
-            except Exception as ex:
-                logger.exception(ex)
-                flash('При отправки письма произошла ошибка!!!')
-        else:
-            text_error = ''
-            for error in form_.errors:
-                text_error += f"{error}: {form_.errors[error][0]}<br>"
-            flash(text_error)
+        except Exception as ex:
+            logger.exception(ex)
+            flash('При отправки письма произошла ошибка!!!')
+    else:
+        text_error = ''
+        for error in form_.errors:
+            text_error += f"{error}: {form_.errors[error][0]}<br>"
+        flash(text_error)
 
     return redirect(url_for('auth_.registration'))
 
@@ -192,7 +191,6 @@ def forgot_password():
 
 @auth_.route('/forgot-process', methods=('POST',))
 def forgot_password_process():
-
     """Процесс восстановления доступа
 
     :return: страницу
