@@ -21,7 +21,7 @@ def index(page=1):
     LIMIT = 15
     user_id = current_user.get_id()
     events_ = Event.query.filter(
-        and_(Event.status.__eq__(Event.STATUS_ACTIVATE),
+        and_(Event.status.__ne__(Event.STATUS_DELETE),
              Event.user_id.__eq__(user_id))).order_by(
         Event.date_at.asc()).paginate(
         page, LIMIT, False)

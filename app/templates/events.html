@@ -45,7 +45,7 @@
                             <td class="text-center align-middle">{{ event.title }}</td>
                             <td class="text-center align-middle">{{ event.date_at.strftime('%d.%m.%Y') }}</td>
                             <td class="text-center align-middle">{{ event.place }}</td>
-                            <td class="text-center align-middle">{{ event.status }}</td>
+                            <td class="text-center align-middle">{% if event.status == 1 %} активна {% else %} завершена {% endif %}</td>
                             <td class="text-center align-middle">{{ event.files|length }}</td>
                             <td class="text-center align-middle">{{ event.created_at.strftime('%d.%m.%Y') }}</td>
                             <td class="text-center align-middle">
