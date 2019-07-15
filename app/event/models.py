@@ -17,8 +17,7 @@ class Event(db.Model):
     id = db.Column(db.BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='ID события')
     title = db.Column(db.String(255), nullable=False, comment='Название события')
     user_id = db.Column(
-        db.BigInteger, db.ForeignKey('users.id', ondelete='CASCADE'),
-        nullable=False, comment='ID пользователя')
+        db.BigInteger, db.ForeignKey('users.id', ondelete='CASCADE'), index=True, nullable=False, comment='ID пользователя')
     date_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата события')
     place = db.Column(db.String(255), nullable=False, comment='Место')
     token = db.Column(db.String(500), nullable=True, index=True, unique=True,
@@ -42,11 +41,9 @@ class EventFiles(db.Model):
     id = db.Column(db.BigInteger, primary_key=True, nullable=False,
                    autoincrement=True, comment='Id связи сущности и файла')
     file_id = db.Column(
-        db.BigInteger, db.ForeignKey('files.id', ondelete='CASCADE'),
-        nullable=False, comment='Id файла')
+        db.BigInteger, db.ForeignKey('files.id', ondelete='CASCADE'), index=True, nullable=False, comment='Id файла')
     event_id = db.Column(
-        db.BigInteger, db.ForeignKey('events.id', ondelete='CASCADE'),
-        nullable=False, comment='Id сущности')
+        db.BigInteger, db.ForeignKey('events.id', ondelete='CASCADE'), index=True, nullable=False, comment='Id сущности')
     created_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата создания')
     sort = db.Column(db.Integer, nullable=True, comment='Для сортировка фотографий')
     file_data = db.relationship('Files')
