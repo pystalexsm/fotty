@@ -11,7 +11,7 @@ from app.auth_.models import User
 from app.blueprints import init_blueprint
 from app.database import db
 from app.email import mail
-from app.event.models import Event, EventFiles
+from app.event.models import Client, Event, EventFiles
 from app.files.models import Files
 from config import Config
 

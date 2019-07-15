@@ -1,3 +1,4 @@
+from app.album.ajax import album_ajax as album_ajax_blueprint
 from app.album.views import album as album_blueprint
 from app.auth_.views import auth_ as auth_blueprint
 from app.blockchain.views import blockchain as blockchain_blueprint
@@ -27,6 +28,7 @@ def init_blueprint(app):
     app.register_blueprint(event_ajax_blueprint)
     app.register_blueprint(files_blueprint)
     app.register_blueprint(album_blueprint)
+    app.register_blueprint(album_ajax_blueprint)
     app.register_blueprint(blockchain_blueprint)
 
     return app

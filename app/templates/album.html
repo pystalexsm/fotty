@@ -46,7 +46,20 @@
                 return pair.value
             }).join(), 31);
 
-            console.info(userId);
+            if (userId) {
+                $.ajax({
+                    url: '/album/ajax/client',
+                    type: "POST",
+                    data: { 'fingerprint': userId },
+                    success: (response, textStatus, jqXHR) => {
+                        if (jqXHR.status === 200) {
+                            if (response.status === 1) {
+                                console.info(response)
+                            }
+                        }
+                    }
+                });
+            }
 
         });
 
