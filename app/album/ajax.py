@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
+from sqlalchemy import and_
 
-from app.event.models import Client
+from app.event.models import Client, EventViews
 from app.database import db
 
 
@@ -11,6 +12,9 @@ album_ajax = Blueprint('album_ajax', __name__, url_prefix='/album/ajax')
 @album_ajax.route('/client', methods=('POST',))
 def client():
     fingerprint = request.form.get('fingerprint')
+    event_id = request.form.get('event_id')
+
+    print(event_id, fingerprint)
 
     if fingerprint:
         fingerprint = fingerprint.strip()
@@ -24,6 +28,24 @@ def client():
             )
 
             db.session.add(client_)
+            db.session.commit()
+
+        if client_ and event_id:
+            views_ = EventViews.query.filter(
+                and_(EventViews.client_id.__eq__(client_.id),
+                     EventViews.event_id.__eq__(event_id))).first()
+            if not views_:
+                views_ = EventViews(
+                    client_id=client_.id,
+                    event_id=event_id,
+                    created_at=datetime.now(),
+                    cnt=0,
+                )
+
+            views_.cnt += 1
+            views_.updated_at = datetime.now()
+
+            db.session.add(views_)
             db.session.commit()
 
     return jsonify(message='Ok'), 200

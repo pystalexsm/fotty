@@ -26,6 +26,14 @@ def index(page=1):
         Event.date_at.asc()).paginate(
         page, LIMIT, False)
 
+    if events_:
+        for event in events_.items:
+            for views_ in event.views:
+                if not hasattr(event, 'cnt_views'):
+                    event.cnt_views = 0
+
+                event.cnt_views += views_.cnt
+
     return render_template('events.html', user=current_user, events=events_, title='Список событий')
 
 

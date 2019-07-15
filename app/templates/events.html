@@ -33,13 +33,13 @@
                             <th class="text-center align-middle">Место события</th>
                             <th class="text-center align-middle">Статус</th>
                             <th class="text-center align-middle">Кол-во фото</th>
+                            <th class="text-center align-middle">Кол-во просмотров</th>
                             <th class="text-center align-middle">Дата создания</th>
                             <th class="text-center align-middle">Действие</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for event in events.items %}
-
                         <tr>
                             <td class="text-center align-middle">{{ event.id }}</td>
                             <td class="text-center align-middle">{{ event.title }}</td>
@@ -47,6 +47,7 @@
                             <td class="text-center align-middle">{{ event.place }}</td>
                             <td class="text-center align-middle">{% if event.status == 1 %} активна {% else %} завершена {% endif %}</td>
                             <td class="text-center align-middle">{{ event.files|length }}</td>
+                            <td class="text-center align-middle">{% if event.cnt_views %} {{ event.cnt_views }}  {% else %} 0 {% endif %}</td>
                             <td class="text-center align-middle">{{ event.created_at.strftime('%d.%m.%Y') }}</td>
                             <td class="text-center align-middle">
                                 <a href="{{ url_for('event.edit', id=event.id) }}"><i style="font-size: 1.3em"

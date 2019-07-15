@@ -26,6 +26,7 @@ class Event(db.Model):
     created_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата создвния')
     updated_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата обновления')
     files = db.relationship('EventFiles', order_by="asc(EventFiles.sort)")  # todo уточнить, как лучше делать!!!
+    views = db.relationship('EventViews')
 
     def __repr__(self):
         return '<Event %r>' % self.title
@@ -50,6 +51,24 @@ class EventFiles(db.Model):
 
     def __repr__(self):
         return '<EventFiles %r>' % self.id
+
+
+class EventViews(db.Model):
+    """
+    Модель Просмотры события
+    """
+
+    __tablename__ = 'event_views'
+
+    id = db.Column(db.BigInteger, primary_key=True, nullable=False, autoincrement=True, comment='ID Клиента')
+    client_id = db.Column(db.BigInteger, db.ForeignKey('clients.id', ondelete='CASCADE'), nullable=False, comment='ID клиента')
+    event_id = db.Column(db.BigInteger, db.ForeignKey('events.id', ondelete='CASCADE'), nullable=False, comment='ID События')
+    cnt = db.Column(db.Integer, nullable=False, default=0, comment='Кол-во просмотров')
+    created_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата создания')
+    updated_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата обновления')
+
+    def __repr__(self):
+        return '<EventViews %r>' % self.id
 
 
 class Client(db.Model):

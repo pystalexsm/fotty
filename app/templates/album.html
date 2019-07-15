@@ -14,6 +14,8 @@
     </div>
     <hr>
 
+    <input id="event-id" type="hidden" value="{{ event.id }}">
+
     <div class="grid">
         {% for file in event.files %}
         <a data-fancybox="gallery" href="{{ url_for('static', filename='files/' + file.file_data.filename) }}"
@@ -47,20 +49,22 @@
             }).join(), 31);
 
             if (userId) {
+
+                var eventId = +$('#event-id').val()
+
                 $.ajax({
                     url: '/album/ajax/client',
                     type: "POST",
-                    data: { 'fingerprint': userId },
+                    data: { 'fingerprint': userId, 'event_id': eventId },
                     success: (response, textStatus, jqXHR) => {
                         if (jqXHR.status === 200) {
                             if (response.status === 1) {
-                                console.info(response)
+                                // пустота
                             }
                         }
                     }
                 });
             }
-
         });
 
     });
