@@ -11,10 +11,19 @@ album_ajax = Blueprint('album_ajax', __name__, url_prefix='/album/ajax')
 
 @album_ajax.route('/client', methods=('POST',))
 def client():
+    """Для идентификации клиента и фиксации просмртра
+
+    :param fingerprint: Идентификатор клиента
+    :type fingerprint: string
+
+    :param event_id: Идентификатор события
+    :type event_id: integer
+
+    :return: message, status
+    :rtype: jsonify
+    """
     fingerprint = request.form.get('fingerprint')
     event_id = request.form.get('event_id')
-
-    print(event_id, fingerprint)
 
     if fingerprint:
         fingerprint = fingerprint.strip()

@@ -14,16 +14,16 @@ album = Blueprint('album', __name__, url_prefix='/album')
 def index(token):
     """Для отображения страницы с альбомом!!!
 
-    Parameters
-    ----------
-    token : string
-        Токен доступа к альбому события
+    :param token:  Токен доступа к альбому события
+    :type token: string
 
-    Returns
-    -------
-    Flask.render_template
-        Рендерит шаблон из папки шаблонов с заданным контекстом или 404
+    :param event_id: Идентификатор события
+    :type event_id: integer
+
+    :return: Рендерит шаблон из папки шаблонов с заданным контекстом или 404
+    :rtype: Flask.render_template
     """
+
     if token:
         event_ = Event.query.filter_by(token=token).first()
 

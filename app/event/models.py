@@ -20,8 +20,7 @@ class Event(db.Model):
                         index=True, nullable=False, comment='ID пользователя')
     date_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата события')
     place = db.Column(db.String(255), nullable=False, comment='Место')
-    token = db.Column(db.String(500), nullable=True, index=True, unique=True,
-                      default='', comment='Токен доступа в альбому с фото')
+    token = db.Column(db.String(500), nullable=True, index=True, default='', comment='Токен доступа в альбому с фото')
     status = db.Column(db.Integer, nullable=False, comment='Статус', default=1)
     created_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата создвния')
     updated_at = db.Column(db.DateTime(), nullable=False, default=datetime.now(), comment='Дата обновления')
