@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from sqlalchemy import and_
+from sqlalchemy import and_, exc
 
 from app.database import db
 from app.event.models import Event
@@ -58,18 +58,26 @@ def create():
 
         if title and date_at and place:
 
-            event_ = Event(
-                title=title,
-                date_at=date_at,
-                place=place,
-                status=1,
-                created_at=datetime.now(),
-                updated_at=datetime.now(),
-                user_id=current_user.get_id()
-            )
+            try:
+                event_ = Event(
+                    title=title,
+                    date_at=date_at,
+                    place=place,
+                    status=1,
+                    created_at=datetime.now(),
+                    updated_at=datetime.now(),
+                    user_id=current_user.get_id()
+                )
 
-            db.session.add(event_)
-            db.session.commit()
+                db.session.add(event_)
+                db.session.commit()
+
+            except exc.IntegrityError as ex:
+
+                logger.exception(ex)
+                db.session.rollback()
+
+                flash('Что то пошло не так!!!')
 
             return redirect(url_for('.index'))
         else:
